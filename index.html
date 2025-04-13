@@ -41,10 +41,15 @@
       font-size: 3rem;
       border-radius: 1rem;
       transition: all 0.2s ease;
+      margin-left: 1rem;
+      margin-right: 1rem;
     }
     button:hover{
       transform: scale(1.1);
       box-shadow: 0 0 1rem;
+    }
+    button:active{
+      transform: scale(0.9);
     }
   </style>
   </head>
@@ -120,7 +125,6 @@
           signUp.style.display = "inline"
         }
       });
-    }
     
     function signIn() {
       const email = document.getElementById("email").value;
