@@ -4,6 +4,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
     <script>
+      // copied from firebase website
       const firebaseConfig = {
         apiKey: "AIzaSyD_0vLx_LR9WQRQCVzxEr92gfnly0PKAIY",
         authDomain: "fir-test-host-45842.firebaseapp.com",
@@ -16,6 +17,7 @@
 
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
+      // copied from firebase website
     </script>
     <style>
       body {
@@ -53,11 +55,11 @@
     <script>
       const auth = firebase.auth();
     
-      function signUp() {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+      function signUp() { //function for signing up
+        const email = document.getElementById("email").value;       //get the email
+        const password = document.getElementById("password").value; //get the password
     
-        auth.createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email, password) // makes the account
         .then((userCredential) => {
           userCredential.user.sendEmailVerification();
           alert("Signup successful ✅ - Verification email sent!");
