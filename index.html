@@ -19,29 +19,34 @@
       firebase.initializeApp(firebaseConfig);
       // copied from firebase website
     </script>
-    <style>
-      body {
-        text-align: center;
-        font-family: sans-serif;
-        background-image: linear-gradient(to left top, #2f4858, #55a810);
-        background-repeat: no-repeat;
-        background-size: cover;
-      }
-      h2 {
-        font-size: 3rem;
-      }
-      p {
-        font-size: 2rem;
-      }
-      input {
-        font-size: 3rem;
-        border-radius: 1rem;
-      }
-      button {
-        font-size: 3rem;
-        border-radius: 1rem;
-      }
-    </style>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans-serif;
+      background-image: linear-gradient(to left top, #2f4858, #55a810);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    h2 {
+      font-size: 3rem;
+    }
+    p {
+      font-size: 2rem;
+    }
+    input {
+      font-size: 3rem;
+      border-radius: 1rem;
+    }
+    button {
+      font-size: 3rem;
+      border-radius: 1rem;
+      transition: all 0.2s ease;
+    }
+    button:hover{
+      transform: scale(1.1);
+      box-shadow: 0 0 1rem;
+    }
+  </style>
   </head>
   <body>
     <h2>Login / Sign Up</h2>
@@ -115,6 +120,53 @@
           signUp.style.display = "inline"
         }
       });
-    </script>
-  </body>
+    }
+    
+    function signIn() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      
+      auth.signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        if (!userCredential.user.emailVerified) {
+          alert("Please verify your email first!");
+          auth.signOut();
+          return;
+        }
+        alert("Login successful ✅");
+        console.log(userCredential.user);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+    }
+    
+    function signOut() {
+      auth.signOut()
+      .then(() => {
+        alert("Signed out 👋");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+    }
+    
+    // Realtime listener for auth state
+    auth.onAuthStateChanged((user) => {
+      const status = document.getElementById("user-status");
+      const signOutBtn = document.getElementById("signOut");
+      const signUp = document.getElementById("signUp");
+      
+      if (user) {
+        status.innerText = `Logged in as: ${user.email}`;
+        signOutBtn.style.display = "inline"; // Show button
+        signUp.style.display = "none"
+      } else {
+        status.innerText = "Not logged in";
+        signOutBtn.style.display = "none"; // Hide button
+        signUp.style.display = "inline"
+      }
+    });
+  </script>
+</body>
 </html>
