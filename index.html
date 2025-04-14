@@ -62,6 +62,7 @@
     <button onclick="signIn()">Sign In 🔑</button>
     <button id="signOut" onclick="signOut()">Sign Out ↩️</button>
     <p id="user-status"></p>
+    <button id="resetBtn" onclick="resetPassword()">Forgot Password?</button>
     <script>
       const auth = firebase.auth();
     
@@ -108,21 +109,36 @@
             alert(error.message);
           });
       }
-    
+
+      function resetPassword() {
+        const email = document.getElementById("email").value;
+        
+        auth.sendPasswordResetEmail(email)
+          .then(() => {
+            alert("Password reset email sent! Check your inbox");
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      }
+
       // Realtime listener for auth state
       auth.onAuthStateChanged((user) => {
         const status = document.getElementById("user-status");
         const signOutBtn = document.getElementById("signOut");
         const signUp = document.getElementById("signUp");
+        const resetBtn = document.getElementById("resetBtn"); 
 
         if (user) {
           status.innerText = `Logged in as: ${user.email}`;
-          signOutBtn.style.display = "inline"; // Show button
-          signUp.style.display = "none"
+          signOutBtn.style.display = "block";
+          signUpBtn.style.display = "none";
+          resetBtn.style.display = "none"; // Hide reset button
         } else {
           status.innerText = "Not logged in";
-          signOutBtn.style.display = "none"; // Hide button
-          signUp.style.display = "inline"
+          signOutBtn.style.display = "none";
+          signUpBtn.style.display = "block";
+          resetBtn.style.display = "block"; // Show reset button
         }
       });
     
