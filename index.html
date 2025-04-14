@@ -1,24 +1,104 @@
 <!DOCTYPE html>
 <html style="height: 100%;">
-  <head>
-    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
-    <script>
-      // copied from firebase website
-      const firebaseConfig = {
-        apiKey: "AIzaSyD_0vLx_LR9WQRQCVzxEr92gfnly0PKAIY",
-        authDomain: "fir-test-host-45842.firebaseapp.com",
-        databaseURL: "https://fir-test-host-45842-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "fir-test-host-45842",
-        storageBucket: "fir-test-host-45842.firebasestorage.app",
-        messagingSenderId: "127544482309",
-        appId: "1:127544482309:web:175d9f67acf7b17ebc1a6c"
-      };
+<head>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      sendEmailVerification,
+      signInWithEmailAndPassword,
+      signOut,
+      sendPasswordResetEmail,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      // copied from firebase website
-    </script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD_0vLx_LR9WQRQCVzxEr92gfnly0PKAIY",
+      authDomain: "fir-test-host-45842.firebaseapp.com",
+      databaseURL: "https://fir-test-host-45842-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "fir-test-host-45842",
+      storageBucket: "fir-test-host-45842.firebasestorage.app",
+      messagingSenderId: "127544482309",
+      appId: "1:127544482309:web:175d9f67acf7b17ebc1a6c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.signUp = () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          sendEmailVerification(userCredential.user);
+          alert("Signup successful ✅ - Verification email sent!");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    };
+
+    window.signIn = () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          if (!userCredential.user.emailVerified) {
+            alert("Please verify your email first!");
+            signOut(auth);
+            return;
+          }
+          alert("Login successful ✅");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    };
+
+    window.signOut = () => {
+      signOut(auth)
+        .then(() => {
+          alert("Signed out 👋");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    };
+
+    window.resetPassword = () => {
+      const email = document.getElementById("email").value;
+
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          alert("Password reset email sent! Check your inbox");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      const status = document.getElementById("user-status");
+      const signOutBtn = document.getElementById("signOut");
+      const signUpBtn = document.getElementById("signUp");
+      const resetBtn = document.getElementById("resetBtn");
+
+      if (user) {
+        status.innerText = `Logged in as: ${user.email}`;
+        signOutBtn.style.display = "inline";
+        signUpBtn.style.display = "none";
+        resetBtn.style.display = "none";
+      } else {
+        status.innerText = "Not logged in";
+        signOutBtn.style.display = "none";
+        signUpBtn.style.display = "inline";
+        resetBtn.style.display = "inline";
+      }
+    });
+  </script>
   <style>
     body {
       text-align: center;
@@ -44,149 +124,23 @@
       margin-left: 1rem;
       margin-right: 1rem;
     }
-    button:hover{
+    button:hover {
       transform: scale(1.1);
       box-shadow: 0 0 1rem;
     }
-    button:active{
+    button:active {
       transform: scale(0.9);
     }
   </style>
-  </head>
-  <body>
-    <h2>Login / Sign Up</h2>
-    <input type="email" id="email" placeholder="Email" /><br><br>
-    <input type="password" id="password" placeholder="Password" />
-    <br><br>
-    <button id="signUp" onclick="signUp()">Sign Up 📝</button>
-    <button onclick="signIn()">Sign In 🔑</button>
-    <button id="signOut" onclick="signOut()">Sign Out ↩️</button>
-    <p id="user-status"></p>
-    <button id="resetBtn" onclick="resetPassword()">Forgot Password?</button>
-    <script>
-      const auth = firebase.auth();
-    
-      function signUp() { //function for signing up
-        const email = document.getElementById("email").value;       //get the email
-        const password = document.getElementById("password").value; //get the password
-    
-        auth.createUserWithEmailAndPassword(email, password) // makes the account
-        .then((userCredential) => {
-          userCredential.user.sendEmailVerification();
-          alert("Signup successful ✅ - Verification email sent!");
-          console.log(userCredential.user);
-        })
-          .catch((error) => {
-            alert(error.message);
-          });
-      }
-    
-      function signIn() {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-    
-        auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          if (!userCredential.user.emailVerified) {
-            alert("Please verify your email first!");
-            auth.signOut();
-            return;
-          }
-          alert("Login successful ✅");
-          console.log(userCredential.user);
-        })
-          .catch((error) => {
-            alert(error.message);
-          });
-      }
-    
-      function signOut() {
-        auth.signOut()
-          .then(() => {
-            alert("Signed out 👋");
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
-      }
-
-      function resetPassword() {
-        const email = document.getElementById("email").value;
-        
-        auth.sendPasswordResetEmail(email)
-          .then(() => {
-            alert("Password reset email sent! Check your inbox");
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
-      }
-
-      // Realtime listener for auth state
-      auth.onAuthStateChanged((user) => {
-        const status = document.getElementById("user-status");
-        const signOutBtn = document.getElementById("signOut");
-        const signUp = document.getElementById("signUp");
-        const resetBtn = document.getElementById("resetBtn"); 
-
-        if (user) {
-          status.innerText = `Logged in as: ${user.email}`;
-          signOutBtn.style.display = "block";
-          signUpBtn.style.display = "none";
-          resetBtn.style.display = "none"; // Hide reset button
-        } else {
-          status.innerText = "Not logged in";
-          signOutBtn.style.display = "none";
-          signUpBtn.style.display = "block";
-          resetBtn.style.display = "block"; // Show reset button
-        }
-      });
-    
-    function signIn() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      
-      auth.signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        if (!userCredential.user.emailVerified) {
-          alert("Please verify your email first!");
-          auth.signOut();
-          return;
-        }
-        alert("Login successful ✅");
-        console.log(userCredential.user);
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-    }
-    
-    function signOut() {
-      auth.signOut()
-      .then(() => {
-        alert("Signed out 👋");
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-    }
-    
-    // Realtime listener for auth state
-    auth.onAuthStateChanged((user) => {
-      const status = document.getElementById("user-status");
-      const signOutBtn = document.getElementById("signOut");
-      const signUp = document.getElementById("signUp");
-      
-      if (user) {
-        status.innerText = `Logged in as: ${user.email}`;
-        signOutBtn.style.display = "inline"; // Show button
-        signUp.style.display = "none"
-      } else {
-        status.innerText = "Not logged in";
-        signOutBtn.style.display = "none"; // Hide button
-        signUp.style.display = "inline"
-      }
-    });
-  </script>
+</head>
+<body>
+  <h2>Login / Sign Up</h2>
+  <input type="email" id="email" placeholder="Email" /><br><br>
+  <input type="password" id="password" placeholder="Password" /><br><br>
+  <button id="signUp" onclick="signUp()">Sign Up 📝</button>
+  <button onclick="signIn()">Sign In 🔑</button>
+  <button id="signOut" onclick="signOut()">Sign Out ↩️</button>
+  <p id="user-status"></p>
+  <button id="resetBtn" onclick="resetPassword()">Forgot Password?</button>
 </body>
 </html>
