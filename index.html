@@ -36,6 +36,7 @@
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           sendEmailVerification(userCredential.user);
+          auth.signOut();
           alert("Signup successful ✅ - Verification email sent!");
           loading.style.display = "none";
         })
@@ -55,6 +56,7 @@
       signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
         if (!userCredential.user.emailVerified) {
           alert("Please verify your email first!");
+          loading.style.display = "none";
           signOut(auth);
           return;
         }
