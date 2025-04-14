@@ -29,33 +29,42 @@
     window.signUp = () => {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
+      const loading = document.querySelector("span");
+
+      loading.style.display = "flex";
 
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           sendEmailVerification(userCredential.user);
           alert("Signup successful ✅ - Verification email sent!");
+          loading.style.display = "none";
         })
         .catch((error) => {
           alert(error.message);
+          loading.style.display = "none";
         });
     };
 
     window.signIn = () => {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
+      const loading = document.querySelector("span");
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          if (!userCredential.user.emailVerified) {
-            alert("Please verify your email first!");
-            signOut(auth);
-            return;
-          }
-          alert("Login successful ✅");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
+      loading.style.display = "flex";
+
+      signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+        if (!userCredential.user.emailVerified) {
+          alert("Please verify your email first!");
+          signOut(auth);
+          return;
+        }
+        alert("Login successful ✅");
+        loading.style.display = "none";
+      })
+      .catch((error) => {
+        alert(error.message);
+        loading.style.display = "none";
+      });
     };
 
     window.signOut = () => {
@@ -126,6 +135,23 @@
       font-size: 3rem;
       border-radius: 1rem;
     }
+    span {
+      display: none;
+      justify-content: center;
+    }
+    div {
+      width: 3rem;
+      height: 3rem;
+      border: 0.5rem solid transparent;
+      border-top: 0.5rem solid #ffffff;
+      border-radius: 50%;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     button {
       font-size: 3rem;
       border-radius: 1rem;
@@ -150,6 +176,7 @@
   <button id="signUp" onclick="signUp()">Sign Up 📝</button>
   <button id="signIn" onclick="signIn()">Sign In 🔑</button>
   <button id="signOut" onclick="signOut()">Sign Out ↩️</button>
+  <br><br><span><div></div></span>
   <p id="user-status"></p>
   <button id="resetBtn" onclick="resetPassword()">Forgot Password</button>
 </body>
