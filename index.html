@@ -83,19 +83,28 @@
     onAuthStateChanged(auth, (user) => {
       const status = document.getElementById("user-status");
       const signOutBtn = document.getElementById("signOut");
+      const signIn = document.getElementById("signIn");
       const signUpBtn = document.getElementById("signUp");
       const resetBtn = document.getElementById("resetBtn");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
 
       if (user) {
         status.innerText = `Logged in as: ${user.email}`;
         signOutBtn.style.display = "inline";
+        signIn.style.display = "none";
         signUpBtn.style.display = "none";
         resetBtn.style.display = "none";
+        email.style.display = "none";
+        password.style.display = "none"
       } else {
         status.innerText = "Not logged in";
         signOutBtn.style.display = "none";
+        signIn.style.display = "inline";
         signUpBtn.style.display = "inline";
         resetBtn.style.display = "inline";
+        email.style.display = "inline";
+        password.style.display = "inline"
       }
     });
   </script>
@@ -138,7 +147,7 @@
   <input type="email" id="email" placeholder="Email" /><br><br>
   <input type="password" id="password" placeholder="Password" /><br><br>
   <button id="signUp" onclick="signUp()">Sign Up 📝</button>
-  <button onclick="signIn()">Sign In 🔑</button>
+  <button id="signIn" onclick="signIn()">Sign In 🔑</button>
   <button id="signOut" onclick="signOut()">Sign Out ↩️</button>
   <p id="user-status"></p>
   <button id="resetBtn" onclick="resetPassword()">Forgot Password?</button>
