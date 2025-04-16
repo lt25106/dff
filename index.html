@@ -1,185 +1,38 @@
-<!DOCTYPE html>
-<html style="height: 100%;">
+<html lang="en">
 <head>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      sendEmailVerification,
-      signInWithEmailAndPassword,
-      signOut,
-      sendPasswordResetEmail,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyD_0vLx_LR9WQRQCVzxEr92gfnly0PKAIY",
-      authDomain: "fir-test-host-45842.firebaseapp.com",
-      databaseURL: "https://fir-test-host-45842-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "fir-test-host-45842",
-      storageBucket: "fir-test-host-45842.firebasestorage.app",
-      messagingSenderId: "127544482309",
-      appId: "1:127544482309:web:175d9f67acf7b17ebc1a6c"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    window.signUp = () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const loading = document.querySelector("span");
-
-      loading.style.display = "flex";
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          sendEmailVerification(userCredential.user);
-          auth.signOut();
-          alert("Signup successful ✅ - Verification email sent!");
-          loading.style.display = "none";
-        })
-        .catch((error) => {
-          alert(error.message);
-          loading.style.display = "none";
-        });
-    };
-
-    window.signIn = () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const loading = document.querySelector("span");
-
-      loading.style.display = "flex";
-
-      signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-        if (!userCredential.user.emailVerified) {
-          alert("Please verify your email first!");
-          loading.style.display = "none";
-          signOut(auth);
-          return;
-        }
-        alert("Login successful ✅");
-        loading.style.display = "none";
-      })
-      .catch((error) => {
-        alert(error.message);
-        loading.style.display = "none";
-      });
-    };
-
-    window.signOut = () => {
-      signOut(auth)
-        .then(() => {
-          alert("Signed out 👋");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    };
-
-    window.resetPassword = () => {
-      const email = document.getElementById("email").value;
-
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          alert("Password reset email sent! Check your inbox");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    };
-
-    onAuthStateChanged(auth, (user) => {
-      const status = document.getElementById("user-status");
-      const signOutBtn = document.getElementById("signOut");
-      const signIn = document.getElementById("signIn");
-      const signUpBtn = document.getElementById("signUp");
-      const resetBtn = document.getElementById("resetBtn");
-      const email = document.getElementById("email");
-      const password = document.getElementById("password");
-
-      if (user) {
-        status.innerText = `Logged in as: ${user.email}`;
-        signOutBtn.style.display = "inline";
-        signIn.style.display = "none";
-        signUpBtn.style.display = "none";
-        resetBtn.style.display = "none";
-        email.style.display = "none";
-        password.style.display = "none"
-      } else {
-        status.innerText = "";
-        signOutBtn.style.display = "none";
-        signIn.style.display = "inline";
-        signUpBtn.style.display = "inline";
-        resetBtn.style.display = "inline";
-        email.style.display = "inline";
-        password.style.display = "inline"
-      }
-    });
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DFF Enterprise</title>
+  
   <style>
-    body {
-      text-align: center;
-      font-family: sans-serif;
-      background-image: linear-gradient(to left top, #49A77E, #57AD10);
-      background-repeat: no-repeat;
-      background-size: cover;
+    .product{
+      display: inline-block;
+      border: 0.125rem solid;
+      margin: 0.25rem;
+      transition: all 0.1s ease;
     }
-    h2 {
-      font-size: 3rem;
-    }
-    p {
-      font-size: 2rem;
-    }
-    input {
-      font-size: 3rem;
-      border-radius: 1rem;
-    }
-    span {
-      display: none;
-      justify-content: center;
-    }
-    div {
-      width: 3rem;
-      height: 3rem;
-      border: 0.5rem solid transparent;
-      border-top: 0.5rem solid #ffffff;
-      border-radius: 50%;
-      animation: spin 2s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    button {
-      font-size: 3rem;
-      border-radius: 1rem;
-      transition: all 0.2s ease;
-      margin-left: 1rem;
-      margin-right: 1rem;
-    }
-    button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 1rem;
-    }
-    button:active {
-      transform: scale(0.9);
-      box-shadow: 0 0 0;
+    .product:hover{
+      margin: 0.125rem;
+      border: 0.25rem solid;
     }
   </style>
 </head>
 <body>
-  <h2>Login / Sign Up</h2>
-  <input type="email" id="email" placeholder="Email" /><br><br>
-  <input type="password" id="password" placeholder="Password" /><br><br>
-  <button id="signUp" onclick="signUp()">Sign Up 📝</button>
-  <button id="signIn" onclick="signIn()">Sign In 🔑</button>
-  <button id="signOut" onclick="signOut()">Sign Out ↩️</button>
-  <br><br><span><div></div></span>
-  <p id="user-status"></p>
-  <button id="resetBtn" onclick="resetPassword()">Forgot Password</button>
+  <div id="shop"></div>
+  <script>
+    const products = [
+    {name: "Australia Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
+    {name: "Cat", Cost: 9999}
+    ];
+    const shopDiv = document.getElementById('shop');
+    
+    products.forEach(product => {
+      const productDiv = document.createElement('div');
+      productDiv.classList.add('product');
+      productDiv.innerHTML = 
+      `<img src="Product_images/${product.Image}.png" style="height: 16rem;"> <br> <h2>${product.name}</h2> $${product.Cost} `;
+      shopDiv.appendChild(productDiv);
+    });
+  </script>
 </body>
 </html>
