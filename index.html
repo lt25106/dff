@@ -5,15 +5,30 @@
   <title>DFF Enterprise</title>
   
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Varela+Round&display=swap');
+
+    html {
+      height: 100%;
+      font-family: "Varela Round", sans-serif;
+    }
+    body {
+      background-image: linear-gradient(white,#eafae0);
+    }
+    #shop {
+      display: flex;
+      justify-content: space-around;
+    }
     .product{
       display: inline-block;
-      border: 0.125rem solid;
-      margin: 0.25rem;
-      transition: all 0.1s ease;
+      transition: all 0.5s ease;
+      box-shadow: 0 0 0.5rem;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-top: 1rem;
+      background-color: white;
     }
-    .product:hover{
-      margin: 0.125rem;
-      border: 0.25rem solid;
+    .product:hover {
+      scale: 1.01;
     }
   </style>
 </head>
