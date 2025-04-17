@@ -20,7 +20,8 @@
       padding: 1rem;
     }
     header {
-      text-align: right;
+      display: flex;
+      justify-content: space-between;
       font-size: 2rem;
       margin-bottom: 1rem;
     }
@@ -37,6 +38,7 @@
       padding: 1rem;
       background-color: white;
       box-sizing: border-box;
+      text-align: center;
     }
     .product:hover {
       transform: scale(1.01);
@@ -54,28 +56,36 @@
     #cart {
       margin-top: 2rem;
       padding: 1rem;
-      background-color: #f8f8f8;
+      background-color: white;
       border-radius: 1rem;
-      box-shadow: 0 0 0.5rem rgba(0,0,0,0.1);
+      box-shadow: 0 0 0.5rem;
     }
     #cart h2 {
       margin-top: 0;
     }
-    #cart-items li {
+    #cart-items{
       margin-bottom: 0.5rem;
+      width: 100%;
     }
     .quantity-input {
       width: 3rem;
       margin: 0 0.5rem;
     }
     .remove-button {
-      margin-left: 0.5rem;
+      margin: 0.25rem;
       background-color: red;
       color: white;
       border: none;
-      border-radius: 0.5rem;
+      border-radius: 99rem;
       padding: 0.25rem 0.5rem;
       cursor: pointer;
+      font-size: 1rem;
+    }
+    tbody {
+      font-weight: bolder;
+    }
+    input {
+      font-family: "Varela Round", sans-serif;
     }
   </style>
 </head>
@@ -90,8 +100,21 @@
   <div id="shop"></div>
 
   <div id="cart">
-    <h2>Cart <img src="c.svg" style="height:1.5rem"></h2>
-    <ul id="cart-items"></ul>
+    <h2>Cart <img src="c.svg" style="height:1.5rem" alt="Cart Icon"></h2>
+    <table id="cart-items">
+      <thead>
+        <tr>
+          <td>Product</td>
+          <td>Price</td>
+          <td>Quantity</td>
+          <td>Subtotal</td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Cart items will be dynamically inserted here -->
+      </tbody>
+    </table>
     <strong>Total: $<span id="cart-total">0.00</span></strong>
   </div>
 
@@ -114,26 +137,59 @@
     const cartItems = [];
 
     function updateCartDisplay() {
-      cartItemsList.innerHTML = '';
+      const cartItemsBody = document.querySelector('#cart-items tbody');
+      cartItemsBody.innerHTML = '';
       let total = 0;
 
       cartItems.forEach((item, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          ${item.name} - $${(item.Cost / 100).toFixed(2)} x 
-          <input type="number" min="1" value="${item.quantity}" data-index="${index}" class="quantity-input">
-          <button data-index="${index}" class="remove-button">Remove</button>
-        `;
-        cartItemsList.appendChild(li);
-        total += item.Cost * item.quantity;
+        const row = document.createElement('tr');
+
+        // Product Name
+        const nameCell = document.createElement('td');
+        nameCell.textContent = item.name;
+        row.appendChild(nameCell);
+
+        // Price
+        const priceCell = document.createElement('td');
+        priceCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(item.Cost / 100).toFixed(2)}`;
+        row.appendChild(priceCell);
+
+        // Quantity Input
+        const quantityCell = document.createElement('td');
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.min = '1';
+        quantityInput.value = item.quantity;
+        quantityInput.classList.add('quantity-input');
+        quantityInput.dataset.index = index;
+        quantityCell.appendChild(quantityInput);
+        row.appendChild(quantityCell);
+
+        // Subtotal
+        const subtotal = item.Cost * item.quantity;
+        total += subtotal;
+        const subtotalCell = document.createElement('td');
+        subtotalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(subtotal / 100).toFixed(2)}`;
+        row.appendChild(subtotalCell);
+
+        // Remove Button
+        const actionCell = document.createElement('td');
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.classList.add('remove-button');
+        removeButton.dataset.index = index;
+        actionCell.appendChild(removeButton);
+        row.appendChild(actionCell);
+
+        cartItemsBody.appendChild(row);
       });
 
       cartTotal.textContent = (total / 100).toFixed(2);
 
-      // Attach event listeners for quantity inputs
+      // Event Listeners for Quantity Inputs
       document.querySelectorAll('.quantity-input').forEach(input => {
         input.addEventListener('change', (e) => {
-          const index = e.target.getAttribute('data-index');
+          const index = e.target.dataset.index;
           const newQuantity = parseInt(e.target.value);
           if (newQuantity > 0) {
             cartItems[index].quantity = newQuantity;
@@ -142,10 +198,10 @@
         });
       });
 
-      // Attach event listeners for remove buttons
+      // Event Listeners for Remove Buttons
       document.querySelectorAll('.remove-button').forEach(button => {
         button.addEventListener('click', (e) => {
-          const index = e.target.getAttribute('data-index');
+          const index = e.target.dataset.index;
           cartItems.splice(index, 1);
           updateCartDisplay();
         });
@@ -158,11 +214,11 @@
       productDiv.innerHTML = `
         <img src="Product_images/${product.Image}.png" style="height: 16rem;"> <br>
         <h2>${product.name}</h2>
-        $${(product.Cost / 100).toFixed(2)} <br>
+        <span style="font-weight:1;color:#BBBBBB">$</span>${(product.Cost / 100).toFixed(2)} <br>
         <button>Add to Cart <img src="white c.svg" style="height:1rem;"></button>
       `;
-      const button = productDiv.querySelector('button');
-      button.addEventListener('click', () => {
+
+      productDiv.querySelector('button').addEventListener('click', () => {
         const existingItem = cartItems.find(item => item.name === product.name);
         if (existingItem) {
           existingItem.quantity += 1;
