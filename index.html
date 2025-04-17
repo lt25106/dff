@@ -27,6 +27,7 @@
     }
     header {
       text-align: right;
+      font-size: 2rem;
     }
     #shop {
       display: flex;
@@ -48,18 +49,19 @@
 </head>
 <body>
   <header>
+    DFF Enterprise
     <img src="c.svg" style="height: 2rem;">
   </header>
   <div id="shop"></div>
   <script>
     const products = [
-    {name: "Australia Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
-    {name: "Not Australia Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
-    {name: "Austria Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
-    {name: "Australia Cab Bag", Cost: 100, Image:"RM-Australia-Broccoli-1"},
-    {name: "Not Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
-    {name: "Maybe Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
-    {name: "What is this?", Cost: 100, Image:"RM-Australia-Broccoli-1"},
+    {name: "Australia Broccoli", Cost: 9999, Image:"RM-Australia-Broccoli-1"},
+    {name: "Not Australia Broccoli", Cost: 9999, Image:"RM-Australia-Broccoli-1"},
+    {name: "Austria Broccoli", Cost: 9999, Image:"RM-Australia-Broccoli-1"},
+    {name: "Australia Cab Bag", Cost: 9999, Image:"RM-Australia-Broccoli-1"},
+    {name: "Not Broccoli", Cost: 9999, Image:"RM-Australia-Broccoli-1"},
+    {name: "Maybe Broccoli", Cost: 9999, Image:"RM-Australia-Broccoli-1"},
+    {name: "What is this?", Cost: 9999, Image:"RM-Australia-Broccoli-1"},
     {name: "Cat", Cost: 9999}
     ];
     const shopDiv = document.getElementById('shop');
@@ -67,7 +69,7 @@
     products.forEach(product => {
       const productDiv = document.createElement('div');
       productDiv.classList.add('product');
-      productDiv.innerHTML = `<img src="Product_images/${product.Image}.png" style="height: 16rem;"> <br> <h2>${product.name}</h2> $${product.Cost} <br><button>Add to <img src="white c.svg" style="height: 1rem;"></button>`;
+      productDiv.innerHTML = `<img src="Product_images/${product.Image}.png" style="height: 16rem;"> <br> <h2>${product.name}</h2> $${product.Cost / 100} <br><button>Add to <img src="white c.svg" style="height: 1rem;"></button>`;
       shopDiv.appendChild(productDiv);
     });
   </script>
