@@ -23,7 +23,6 @@
       display: flex;
       justify-content: space-between;
       font-size: 2rem;
-      margin-bottom: 1rem;
     }
     #shop {
       display: grid;
@@ -66,6 +65,7 @@
     #cart-items{
       margin-bottom: 0.5rem;
       width: 100%;
+      display: none;
     }
     .quantity-input {
       width: 3rem;
@@ -81,26 +81,25 @@
       cursor: pointer;
       font-size: 1rem;
     }
-    tbody {
-      font-weight: bolder;
-    }
     input {
       font-family: "Varela Round", sans-serif;
+    }
+    tbody {
+      font-weight: bolder;
     }
   </style>
 </head>
 <body>
   <header>
     DFF Enterprise
-    <a href="#cart">
-      <img src="c.svg" style="height: 2rem;" alt="Logo">
+    <a href="#cart" style="text-decoration: none;color: black;">
+      Your Cart 
+      <img src="c.svg" style="height: 1.5rem;" id="icon">
     </a>
   </header>
-
   <div id="shop"></div>
-
   <div id="cart">
-    <h2>Cart <img src="c.svg" style="height:1.5rem" alt="Cart Icon"></h2>
+    <h2>Cart <img src="c.svg" style="height:1.5rem"></h2>
     <table id="cart-items">
       <thead>
         <tr>
@@ -115,7 +114,7 @@
         <!-- Cart items will be dynamically inserted here -->
       </tbody>
     </table>
-    <strong>Total: $<span id="cart-total">0.00</span></strong>
+    <strong>Total: <span style="font-weight:1;color:#BBBBBB">$</span><span id="cart-total">0.00</span></strong>
   </div>
 
   <script>
@@ -127,7 +126,7 @@
       { name: "Not Broccoli", Cost: 9950, Image: "RM-Australia-Broccoli-1" },
       { name: "Maybe Broccoli", Cost: 9990, Image: "RM-Australia-Broccoli-1" },
       { name: "What is this?", Cost: 9949, Image: "RM-Australia-Broccoli-1" },
-      { name: "Cat", Cost: 99999 }
+      { name: "Cat", Cost: 9999 }
     ];
 
     const shopDiv = document.getElementById('shop');
@@ -137,6 +136,7 @@
     const cartItems = [];
 
     function updateCartDisplay() {
+      cartItemsList.style.display = "table"
       const cartItemsBody = document.querySelector('#cart-items tbody');
       cartItemsBody.innerHTML = '';
       let total = 0;
