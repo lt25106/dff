@@ -6,6 +6,7 @@
   
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+    @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
 
     html {
       min-height: 100%;
@@ -23,6 +24,9 @@
       border-radius: 1.25rem;
       font-size: 1.25rem;
       font-family: "Varela Round", sans-serif;
+    }
+    header {
+      text-align: right;
     }
     #shop {
       display: flex;
@@ -43,6 +47,9 @@
   </style>
 </head>
 <body>
+  <header>
+    <img src="c.svg" style="height: 2rem;">
+  </header>
   <div id="shop"></div>
   <script>
     const products = [
@@ -60,7 +67,7 @@
     products.forEach(product => {
       const productDiv = document.createElement('div');
       productDiv.classList.add('product');
-      productDiv.innerHTML = `<img src="Product_images/${product.Image}.png" style="height: 16rem;"> <br> <h2>${product.name}</h2> $${product.Cost} <br><button>Add to cart</button>`;
+      productDiv.innerHTML = `<img src="Product_images/${product.Image}.png" style="height: 16rem;"> <br> <h2>${product.name}</h2> $${product.Cost} <br><button>Add to <img src="white c.svg" style="height: 1rem;"></button>`;
       shopDiv.appendChild(productDiv);
     });
   </script>
