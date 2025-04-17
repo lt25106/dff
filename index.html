@@ -30,17 +30,18 @@
       font-size: 2rem;
     }
     #shop {
-      display: flex;
-      justify-content: space-evenly;
-      flex-wrap: wrap;
+      display: grid;
+      gap: 1rem;
+      padding: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
     }
-    .product{
+    .product {
       transition: all 0.5s ease;
       box-shadow: 0 0 0.5rem;
       border-radius: 1.25rem;
       padding: 1rem;
-      margin-top: 1rem;
       background-color: white;
+      box-sizing: border-box;
     }
     .product:hover {
       scale: 1.01;
@@ -52,7 +53,8 @@
     DFF Enterprise
     <img src="c.svg" style="height: 2rem;">
   </header>
-  <div id="shop"></div>
+  <div id="shop"></div><br>
+  <div id="cart">Australia Broccoli</div>
   <script>
     const products = [
     {name: "Australia Broccoli", Cost: 9999, Image:"RM-Australia-Broccoli-1"},
