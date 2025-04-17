@@ -14,15 +14,21 @@
     body {
       background-image: linear-gradient(white,#eafae0);
     }
+    button {
+      background-color: black;
+      color: white;
+      border-radius: 99999rem;
+      font-size: 1.25rem;
+    }
     #shop {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
+      flex-wrap: wrap;
     }
     .product{
-      display: inline-block;
       transition: all 0.5s ease;
       box-shadow: 0 0 0.5rem;
-      border-radius: 1rem;
+      border-radius: 2rem;
       padding: 1rem;
       margin-top: 1rem;
       background-color: white;
@@ -37,6 +43,12 @@
   <script>
     const products = [
     {name: "Australia Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
+    {name: "Not Australia Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
+    {name: "Austria Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
+    {name: "Australia Cab Bag", Cost: 100, Image:"RM-Australia-Broccoli-1"},
+    {name: "Not Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
+    {name: "Maybe Broccoli", Cost: 100, Image:"RM-Australia-Broccoli-1"},
+    {name: "What is this?", Cost: 100, Image:"RM-Australia-Broccoli-1"},
     {name: "Cat", Cost: 9999}
     ];
     const shopDiv = document.getElementById('shop');
@@ -44,8 +56,7 @@
     products.forEach(product => {
       const productDiv = document.createElement('div');
       productDiv.classList.add('product');
-      productDiv.innerHTML = 
-      `<img src="Product_images/${product.Image}.png" style="height: 16rem;"> <br> <h2>${product.name}</h2> $${product.Cost} `;
+      productDiv.innerHTML = `<img src="Product_images/${product.Image}.png" style="height: 16rem;"> <br> <h2>${product.name}</h2> $${product.Cost} <br><button>Add to cart</button>`;
       shopDiv.appendChild(productDiv);
     });
   </script>
