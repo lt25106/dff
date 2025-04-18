@@ -51,6 +51,10 @@
       cursor: pointer;
       padding: 0.5rem 1rem;
       border: none;
+      transition: all 0.2s ease;
+    }
+    button:active {
+      scale: 0.9;
     }
     #cart {
       margin-top: 2rem;
@@ -87,13 +91,16 @@
     tbody {
       font-weight: bolder;
     }
+    thead {
+      color: #BBBBBB;
+    }
   </style>
 </head>
 <body>
   <header>
     DFF Enterprise
     <a href="#cart" style="text-decoration: none;color: black;">
-      Your Cart 
+      <span style="font-weight:1;color:#BBBBBB">Your Cart</span>
       <img src="c.svg" style="height: 1.5rem;" id="icon">
     </a>
   </header>
@@ -114,7 +121,7 @@
         <!-- Cart items will be dynamically inserted here -->
       </tbody>
     </table>
-    <strong>Total: <span style="font-weight:1;color:#BBBBBB">$</span><span id="cart-total">0.00</span></strong>
+    <strong><span style="font-weight:1;color:#BBBBBB">Total: $</span><span id="cart-total">0.00</span></strong>
   </div>
 
   <script>
@@ -126,7 +133,7 @@
       { name: "Not Broccoli", Cost: 9950, Image: "RM-Australia-Broccoli-1" },
       { name: "Maybe Broccoli", Cost: 9990, Image: "RM-Australia-Broccoli-1" },
       { name: "What is this?", Cost: 9949, Image: "RM-Australia-Broccoli-1" },
-      { name: "Cat", Cost: 9999 }
+      { name: "Cat", Cost: 9999, Image: "RM-Australia-Broccoli-1" },
     ];
 
     const shopDiv = document.getElementById('shop');
@@ -219,6 +226,8 @@
       `;
 
       productDiv.querySelector('button').addEventListener('click', () => {
+        document.getElementById("icon").src = "notifyc.svg"
+
         const existingItem = cartItems.find(item => item.name === product.name);
         if (existingItem) {
           existingItem.quantity += 1;
