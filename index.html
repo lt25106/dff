@@ -6,7 +6,7 @@
   <title>DFF Enterprise</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
-
+    
     html {
       min-height: 100%;
       font-family: "Varela Round", sans-serif;
@@ -41,6 +41,7 @@
     }
     .product:hover {
       transform: scale(1.01);
+      box-shadow: 0 0 0.75rem;
     }
     button {
       background-color: black;
@@ -123,44 +124,53 @@
     </table>
     <strong><span style="font-weight:1;color:#BBBBBB">Total: $</span><span id="cart-total">0.00</span></strong>
   </div>
-
+  
   <script>
     const products = [
-      { name: "Australia Broccoli", Cost: 9999, Image: "RM-Australia-Broccoli-1" },
-      { name: "Not Australia Broccoli", Cost: 9995, Image: "RM-Australia-Broccoli-1" },
-      { name: "Austria Broccoli", Cost: 9990, Image: "RM-Australia-Broccoli-1" },
-      { name: "Australia Cab Bag", Cost: 9949, Image: "RM-Australia-Broccoli-1" },
-      { name: "Not Broccoli", Cost: 9950, Image: "RM-Australia-Broccoli-1" },
-      { name: "Maybe Broccoli", Cost: 9990, Image: "RM-Australia-Broccoli-1" },
-      { name: "What is this?", Cost: 9949, Image: "RM-Australia-Broccoli-1" },
-      { name: "Cat", Cost: 9999, Image: "RM-Australia-Broccoli-1" },
+    { name: "Australia Broccoli", Cost: 9999, Image: "RM-Australia-Broccoli-1" },
+    { name: "Not Australia Broccoli", Cost: 9995, Image: "RM-Australia-Broccoli-1" },
+    { name: "Austria Broccoli", Cost: 9990, Image: "RM-Australia-Broccoli-1" },
+    { name: "Australia Cab Bag", Cost: 9949, Image: "RM-Australia-Broccoli-1" },
+    { name: "Not Broccoli", Cost: 9950, Image: "RM-Australia-Broccoli-1" },
+    { name: "Maybe Broccoli", Cost: 9990, Image: "RM-Australia-Broccoli-1" },
+    { name: "What is this?", Cost: 9949, Image: "RM-Australia-Broccoli-1" },
+    { name: "Cat", Cost: 9999, Image: "RM-Australia-Broccoli-1" },
     ];
-
+    
     const shopDiv = document.getElementById('shop');
     const cartItemsList = document.getElementById('cart-items');
     const cartTotal = document.getElementById('cart-total');
-
+    
     const cartItems = [];
-
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        cartItems.push(...JSON.parse(savedCart));
+        updateCartDisplay();
+      }
+    });
+    
     function updateCartDisplay() { // run when a button is pressed
       cartItemsList.style.display = "table" // shows the table
       const cartItemsBody = document.querySelector('#cart-items tbody');
       cartItemsBody.innerHTML = ''; // initializes the table
       let total = 0;
-
+      localStorage.setItem('cart', JSON.stringify(cartItems)); //saves cart to localStorage
+      
       cartItems.forEach((item, index) => {
         const row = document.createElement('tr'); // makes a new row
-
+        
         // Product Name
         const nameCell = document.createElement('td'); // makes new cell in the row
         nameCell.textContent = item.name; // set cell to item name
         row.appendChild(nameCell);
-
+        
         // Price
         const priceCell = document.createElement('td');
         priceCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(item.Cost / 100).toFixed(2)}`;
         row.appendChild(priceCell);
-
+        
         // Quantity Input
         const quantityCell = document.createElement('td');
         const quantityInput = document.createElement('input');
@@ -171,14 +181,14 @@
         quantityInput.dataset.index = index;
         quantityCell.appendChild(quantityInput);
         row.appendChild(quantityCell);
-
+        
         // Subtotal
         const subtotal = item.Cost * item.quantity;
         total += subtotal;
         const subtotalCell = document.createElement('td');
         subtotalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(subtotal / 100).toFixed(2)}`;
         row.appendChild(subtotalCell);
-
+        
         // Remove Button
         const actionCell = document.createElement('td');
         const removeButton = document.createElement('button');
@@ -187,12 +197,12 @@
         removeButton.dataset.index = index;
         actionCell.appendChild(removeButton);
         row.appendChild(actionCell);
-
+        
         cartItemsBody.appendChild(row);
       });
-
+      
       cartTotal.textContent = (total / 100).toFixed(2);
-
+      
       // Event Listeners for Quantity Inputs
       document.querySelectorAll('.quantity-input').forEach(input => {
         input.addEventListener('change', (e) => {
@@ -204,7 +214,7 @@
           }
         });
       });
-
+      
       // Event Listeners for Remove Buttons
       document.querySelectorAll('.remove-button').forEach(button => {
         button.addEventListener('click', (e) => {
@@ -214,7 +224,7 @@
         });
       });
     }
-
+    
     products.forEach(product => {
       const productDiv = document.createElement('div');
       productDiv.classList.add('product');
@@ -224,10 +234,10 @@
         <span style="font-weight:1;color:#BBBBBB">$</span>${(product.Cost / 100).toFixed(2)} <br>
         <button>Add to Cart <img src="white c.svg" style="height:1rem;"></button>
       `;
-
+      
       productDiv.querySelector('button').addEventListener('click', () => {
         document.getElementById("icon").src = "notifyc.svg"
-
+        
         const existingItem = cartItems.find(item => item.name === product.name);
         if (existingItem) {
           existingItem.quantity += 1;
