@@ -142,18 +142,18 @@
 
     const cartItems = [];
 
-    function updateCartDisplay() {
-      cartItemsList.style.display = "table"
+    function updateCartDisplay() { // run when a button is pressed
+      cartItemsList.style.display = "table" // shows the table
       const cartItemsBody = document.querySelector('#cart-items tbody');
-      cartItemsBody.innerHTML = '';
+      cartItemsBody.innerHTML = ''; // initializes the table
       let total = 0;
 
       cartItems.forEach((item, index) => {
-        const row = document.createElement('tr');
+        const row = document.createElement('tr'); // makes a new row
 
         // Product Name
-        const nameCell = document.createElement('td');
-        nameCell.textContent = item.name;
+        const nameCell = document.createElement('td'); // makes new cell in the row
+        nameCell.textContent = item.name; // set cell to item name
         row.appendChild(nameCell);
 
         // Price
