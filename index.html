@@ -280,11 +280,12 @@
 
     function search() {
       const stuff = document.getElementsByClassName("product");
-      const searchTerm = searchbar.value.toLowerCase();
+      const searchWords = searchbar.value.toLowerCase().split(" ").filter(Boolean); // split by space and remove empty
 
       Array.from(stuff).forEach(el => {
         const text = el.textContent.toLowerCase();
-        el.style.display = text.includes(searchTerm) ? "" : "none";
+        const matches = searchWords.every(word => text.includes(word)); // all words must be found
+        el.style.display = matches ? "" : "none";
       });
     }
 
