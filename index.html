@@ -127,14 +127,27 @@
   
   <script>
     const products = [
-    { name: "Australia Broccoli", Cost: 9999, Image: "RM-Australia-Broccoli-1" },
-    { name: "Not Australia Broccoli", Cost: 9995, Image: "RM-Australia-Broccoli-1" },
-    { name: "Austria Broccoli", Cost: 9990, Image: "RM-Australia-Broccoli-1" },
-    { name: "Australia Cab Bag", Cost: 9949, Image: "RM-Australia-Broccoli-1" },
-    { name: "Not Broccoli", Cost: 9950, Image: "RM-Australia-Broccoli-1" },
-    { name: "Maybe Broccoli", Cost: 9990, Image: "RM-Australia-Broccoli-1" },
-    { name: "What is this?", Cost: 9949, Image: "RM-Australia-Broccoli-1" },
-    { name: "Cat", Cost: 9999, Image: "RM-Australia-Broccoli-1" },
+    { name: "Baby Spinach", Cost: 9999, Type: "vegetable" },
+    { name: "Bayam", Cost: 9995, Type: "vegetable" },
+    { name: "Big Leaf Tang Oh", Cost: 9990, Type: "vegetable" },
+    { name: "Chye Sim", Cost: 9949, Type: "vegetable" },
+    { name: "Coriander", Cost: 9950, Type: "vegetable" },
+    { name: "Ice Plant Salad", Cost: 9990, Type: "salad" },
+    { name: "Ice Plant", Cost: 9949, Type: "vegetable" },
+    { name: "Japanese Tang Oh", Cost: 9999, Type: "vegetable" },
+    { name: "Kailan", Cost: 9999, Type: "vegetable" },
+    { name: "Kale Salad", Cost: 9999, Type: "salad" },
+    { name: "Kale", Cost: 9999, Type: "vegetable" },
+    { name: "Kang Kong", Cost: 9999, Type: "vegetable" },
+    { name: "Komatsuna", Cost: 9999, Type: "vegetable" },
+    { name: "Crystal Lettuce", Cost: 9999, Type: "vegetable" },
+    { name: "Mesclun Salad", Cost: 9999, Type: "salad" },
+    { name: "Nai Bai", Cost: 9999, Type: "vegetable" },
+    { name: "Red Lettuce", Cost: 9999, Type: "vegetable" },
+    { name: "Red Radish", Cost: 9999, Type: "vegetable" },
+    { name: "Arugula", Cost: 9999, Type: "vegetable" },
+    { name: "Romaine Lettuce", Cost: 9999, Type: "vegetable" },
+    { name: "Xiao Bai Cai", Cost: 9999, Type: "vegetable" },
     ];
     
     const shopDiv = document.getElementById('shop');
@@ -199,6 +212,12 @@
         row.appendChild(actionCell);
         
         cartItemsBody.appendChild(row);
+
+          if (item.Type === 'vegetable') {
+            row.style.backgroundColor = '#e0ffe0'; // Light green for vegetables
+          } else if (item.Type === 'salad') {
+            row.style.backgroundColor = '#ffe0e0'; // Light red for meat
+          }
       });
       
       cartTotal.textContent = (total / 100).toFixed(2);
@@ -229,7 +248,7 @@
       const productDiv = document.createElement('div');
       productDiv.classList.add('product');
       productDiv.innerHTML = `
-        <img src="Product_images/${product.Image}.png" style="height: 16rem;"> <br>
+        <img src="Product_images/${product.name}.webp" style="height: 16rem;"> <br>
         <h2>${product.name}</h2>
         <span style="font-weight:1;color:#BBBBBB">$</span>${(product.Cost / 100).toFixed(2)} <br>
         <button>Add to Cart <img src="white c.svg" style="height:1rem;"></button>
