@@ -16,6 +16,12 @@ header {
   display: flex;
   justify-content: space-between;
   font-size: 3rem;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  border-radius: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 #shop {
   display: grid;
