@@ -136,17 +136,17 @@
   
   <script>
     const products = [
-    { name: "Baby Spinach", Cost: 9999, Type: "vegetable" },
-    { name: "Bayam", Cost: 9995, Type: "vegetable" },
+    { name: "Baby Spinach (120g)", Cost: 500, Type: "vegetable" },
+    { name: "Bayam Red Spinach (250g)", Cost: 250, Type: "vegetable" },
     { name: "Big Leaf Tang Oh", Cost: 9990, Type: "vegetable" },
     { name: "Chye Sim", Cost: 9949, Type: "vegetable" },
     { name: "Coriander", Cost: 9950, Type: "vegetable" },
     { name: "Ice Plant Salad", Cost: 9990, Type: "salad" },
-    { name: "Ice Plant", Cost: 9949, Type: "vegetable" },
-    { name: "Japanese Tang Oh", Cost: 9999, Type: "vegetable" },
+    { name: "Ice Plant (80g)", Cost: 350, Type: "vegetable" },
+    { name: "Japanese Tang Oh (150g)", Cost: 350, Type: "vegetable" },
     { name: "Kailan", Cost: 9999, Type: "vegetable" },
     { name: "Kale Salad", Cost: 9999, Type: "salad" },
-    { name: "Kale", Cost: 9999, Type: "vegetable" },
+    { name: "Kale (120g)", Cost: 400, Type: "vegetable" },
     { name: "Kang Kong", Cost: 9999, Type: "vegetable" },
     { name: "Komatsuna", Cost: 9999, Type: "vegetable" },
     { name: "Crystal Lettuce", Cost: 9999, Type: "vegetable" },
@@ -157,6 +157,12 @@
     { name: "Arugula", Cost: 9999, Type: "vegetable" },
     { name: "Romaine Lettuce", Cost: 9999, Type: "vegetable" },
     { name: "Xiao Bai Cai", Cost: 9999, Type: "vegetable" },
+    //meats from here on
+    {name: "Brazil Pork loin", Cost: 800, Type: "meat"},
+    {name: "Holland Pork Ribs", Cost: 1250, Type: "meat"},
+    {name: "German Pork Belly", Cost: 1050, Type: "meat"},
+    {name: "Holland Pork Ribs", Cost: 540, Type: "meat"},
+
     ];
     
     const shopDiv = document.getElementById('shop');
@@ -224,9 +230,11 @@
         cartItemsBody.appendChild(row);
 
           if (item.Type === 'vegetable') {
-            row.style.backgroundColor = '#e0ffe0'; // Light green for vegetables
-          } else if (item.Type === 'salad') {
+            row.style.backgroundColor = '#cbe757'; // Light green for vegetables
+          } else if (item.Type === 'meat') {
             row.style.backgroundColor = '#ffe0e0'; // Light red for meat
+          } else if (item.Type === 'salad'){
+            row.style.backgroundColor = '#e0ffe0' // Lighter green for salads
           }
       });
       
