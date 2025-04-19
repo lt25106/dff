@@ -96,11 +96,20 @@
     thead {
       color: #BBBBBB;
     }
+    #search {
+      width: 100%;
+      margin-left: 2rem;
+      margin-right: 2rem;
+      border-radius: 2rem;
+      padding-left: 0.75rem;
+      font-size: 3rem;
+    }
   </style>
 </head>
 <body>
   <header>
     <img src="dff.png" style="height: 4rem;">
+    <input id="search" placeholder="Search products...">
     <a href="#cart" style="text-decoration: none;color: black;">
       <img src="c.svg" style="height: 2rem;" id="icon">
     </a>
@@ -153,6 +162,7 @@
     const shopDiv = document.getElementById('shop');
     const cartItemsList = document.getElementById('cart-items');
     const cartTotal = document.getElementById('cart-total');
+    const searchbar = document.getElementById("search");
     
     const cartItems = [];
     
@@ -267,6 +277,18 @@
       });
       shopDiv.appendChild(productDiv);
     });
+
+    function search() {
+      const stuff = document.getElementsByClassName("product");
+      const searchTerm = searchbar.value.toLowerCase();
+
+      Array.from(stuff).forEach(el => {
+        const text = el.textContent.toLowerCase();
+        el.style.display = text.includes(searchTerm) ? "" : "none";
+      });
+    }
+
+    searchbar.addEventListener("keyup",search)
   </script>
 </body>
 </html>
