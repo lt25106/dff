@@ -6,7 +6,7 @@ html {
 }
 body {
   min-height: 100%;
-  background-image: linear-gradient(to bottom right, #f1f2f7, #0f628a);
+  background-image: linear-gradient(to bottom right, #f1f2f7, #199EE1);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   margin: 0;
@@ -14,8 +14,9 @@ body {
 }
 header {
   display: flex;
+  gap: 1rem;
   justify-content: space-between;
-  font-size: 3rem;
+  font-size: 2rem;
   position: sticky;
   top: 0;
   background-color: white;
@@ -28,7 +29,7 @@ header {
   display: grid;
   gap: 1rem;
   padding: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
 }
 .product {
   transition: all 0.5s ease;
@@ -39,6 +40,10 @@ header {
   box-sizing: border-box;
   text-align: center;
 }
+a {
+  color: black;
+  text-decoration: none;
+}
 .product:hover {
   transform: scale(1.01);
   box-shadow: 0 0 0.75rem;
@@ -47,7 +52,7 @@ button {
   background-color: black;
   color: #fff;
   border-radius: 1.25rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-family: "Varela Round", sans-serif;
   cursor: pointer;
   padding: 0.5rem 1rem;
@@ -97,9 +102,13 @@ thead {
 }
 #search {
   width: 100%;
-  margin-left: 2rem;
-  margin-right: 2rem;
   border-radius: 2rem;
   padding-left: 0.75rem;
-  font-size: 3rem;
+  font-size: 1rem;
+}
+select {
+  font-size: 1rem;
+  font-family: 'Varela Round', sans-serif;
+  border-radius: 2rem;
+  text-align: center;
 }
