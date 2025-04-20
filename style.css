@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
-
 html {
   min-height: 100%;
   font-family: "Varela Round", sans-serif;
@@ -23,7 +22,7 @@ header {
   border-radius: 1rem;
   padding: 0.25rem 1rem;
   box-shadow: 0 0 0.5rem;
-  z-index: 99999999999999999;
+  z-index: 2;
 }
 #shop {
   display: grid;
@@ -111,4 +110,12 @@ select {
   font-family: 'Varela Round', sans-serif;
   border-radius: 2rem;
   text-align: center;
+}
+.smolimage:hover {
+  border: 0.2rem solid #0b6645;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+.smolimage {
+  margin: 0.3rem 0.15rem;
 }
