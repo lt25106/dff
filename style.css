@@ -112,10 +112,7 @@ select {
   text-align: center;
 }
 .smolimage:hover {
-  border: 0.2rem solid #0b6645;
+  border: 0.2rem solid;
   box-sizing: border-box;
   transition: all 0.2s ease;
-}
-.smolimage {
-  margin: 0.3rem 0.15rem;
 }
