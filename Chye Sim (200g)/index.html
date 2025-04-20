@@ -25,18 +25,17 @@
     </a>
   </header>
   <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-    <div style="border-radius: 1.25rem; box-shadow: 0 0 0.5rem; overflow: hidden;">
-      <img src="../Product_images/Baby Spinach (120g).png" style="height: 50vh;" id="bigimage">
+    <div style="border-radius: 1.25rem; box-shadow: 0 0 0.5rem; overflow: hidden; align-items: flex-start; height: 75vh;">
+      <img src="../Product_images/Chye Sim (200g).png" style="height: 50vh;" id="bigimage">
         <div style="display: flex;">
-          <img class="smolimage" src="../Product_images/Baby Spinach (120g).png" style="height: 16.66vh;" onclick="bigimage.src = '../Product_images/Baby Spinach (120g).png'">
-          <img class="smolimage" src="2.png" style="height: 16.66vh;" onclick="bigimage.src = '2.png'">
-          <img class="smolimage" src="3.png" style="height: 16.66vh;" onclick="bigimage.src = '3.png'">
+          <img class="smolimage" src="../Product_images/Chye Sim (200g).png" style="height: 25vh;" onclick="bigimage.src = '../Product_images/Chye Sim (200g).png'">
+          <img class="smolimage" src="2.png" style="height: 25vh;" onclick="bigimage.src = '2.png'">
         </div>
     </div>
     <div style="flex: 1 1">
-      $5.00<br>
-      <h1 style="margin: 0;">Baby Spinach (120g)</h1>
-      Baby spinach is a tender, nutrient-rich leafy green known for its mild flavor and smooth texture. It's perfect for salads, smoothies, and light cooking, offering a good source of vitamins A, C, and K, as well as iron and fiber.<br>
+      <br>$3.00<br>
+      <h1 style="margin: 0;">Chye Sim (200g)</h1>
+      Chye Sim, also known as Chinese flowering cabbage, is a leafy green vegetable with tender leaves and vibrant yellow flowers. Mildly sweet and slightly peppery, it’s commonly used in stir-fries, soups, and salads, offering a rich source of vitamins A and C, as well as fiber.<br>
       <br><b>Place of Origin</b>: Singapore<br><br>
       <button onclick="addtocart()">Add to Cart <img src="../white c.svg" style="height:1rem; display: inline;"></button>
     </div>
@@ -47,14 +46,14 @@
 
     function addtocart() {
       const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-      const existingItem = existingCart.find(item => item.name === "Baby Spinach (120g)");
+      const existingItem = existingCart.find(item => item.name === "Chye Sim (200g).png");
       
       if (existingItem) {
         existingItem.quantity++;
       } else {
         existingCart.push({ 
-          name: "Baby Spinach (120g)", 
-          Cost: 500, // Fixed property name
+          name: "Chye Sim (200g)", 
+          Cost: 300, // Fixed property name
           Type: "vegetable", // Added type
           quantity: 1 
         });
