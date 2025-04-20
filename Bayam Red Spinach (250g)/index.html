@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Bayam Red Spinach</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    img {
+      display: block;
+    }
+    .smolimage:hover {
+      border: 0.25rem solid;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+  </style>
+</head>
+<body>
+  <header style="margin-bottom: 1rem;">
+    <a href="../index.html">
+      <img src="../dff.png" style="height: 4rem;">
+    </a>
+    <a href="../index.html#cart" style="text-decoration: none;color: #000;">
+      <img src="../c.svg" style="height: 3rem;" id="icon">
+    </a>
+  </header>
+  <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <div style="border-radius: 1.25rem; box-shadow: 0 0 0.5rem; overflow: hidden;">
+      <img src="../Product_images/Bayam Red Spinach (250g).png" style="height: 50vh;" id="bigimage">
+        <div style="display: flex;">
+          <img class="smolimage" src="../Product_images/Bayam Red Spinach (250g).png" style="height: 25vh;" onclick="bigimage.src = '../Product_images/Bayam Red Spinach (250g).png'">
+          <img class="smolimage" src="2.png" style="height: 25vh;" onclick="bigimage.src = '2.png'">
+        </div>
+    </div>
+    <div style="flex: 1 1">
+      $2.50<br>
+      <h1 style="margin: 0;">Bayam Red Spinach (250g)</h1>
+      Bayam, also known as red spinach, is a vibrant leafy green with deep red stems and leaves. It’s rich in antioxidants, vitamins A and C, and iron, making it a nutritious addition to stir-fries, soups, and salads.<br>
+      <br><b>Place of Origin</b>: Singapore<br><br>
+      <button onclick="addtocart()">Add to Cart <img src="../white c.svg" style="height:1rem; display: inline;"></button>
+    </div>
+  </div>
+  <script>
+    const bigimage = document.getElementById("bigimage");
+    const cartItems = [];
+
+    function addtocart() {
+      const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const existingItem = existingCart.find(item => item.name === "Bayam Red Spinach (250g)");
+      
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        existingCart.push({ 
+          name: "Bayam Red Spinach (250g)", 
+          Cost: 250, // Fixed property name
+          Type: "vegetable", // Added type
+          quantity: 1 
+        });
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(existingCart));
+      document.getElementById("icon").src = "../notifyc.svg";
+    }
+  </script>
+</body>
+</html>

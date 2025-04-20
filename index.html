@@ -9,10 +9,10 @@
 </head>
 <body>
   <header>
-    <img src="dff.png" style="height: 4rem;">
+    <img src="dff.png" style="height: 3rem;">
     <input id="search" placeholder="Search products...">
     <a href="#cart" style="text-decoration: none;color: #000;">
-      <img src="c.svg" style="height: 2rem;" id="icon">
+      <img src="c.svg" style="height: 3rem;" id="icon">
     </a>
   </header>
   <div id="shop"></div>
@@ -80,8 +80,17 @@
         updateCartDisplay(); 
       }
     });
+
+    if (cartItems != []) {
+      document.getElementById("icon").src = "notifyc.svg"
+    }
     
     function updateCartDisplay() { // run when a button is pressed
+
+      document.getElementById("icon").src = cartItems.length > 0 
+        ? "notifyc.svg" 
+        : "c.svg";
+
       cartItemsList.style.display = "table" // shows the table
       const cartItemsBody = document.querySelector('#cart-items tbody');
       cartItemsBody.innerHTML = ''; // initializes the table
@@ -168,17 +177,17 @@
       productDiv.classList.add('product');
       productDiv.innerHTML = `
       <a href="${product.name}/index.html">
-        <img src="Product_images/${product.name}.png" style="height: 16rem;"> <br>
+        <img src="Product_images/${product.name}.png" style="height: 9rem;"> <br>
         <h2>${product.name}</h2>
-        <span style="font-weight:1;color:#BBBBBB">$</span>${(product.Cost / 100).toFixed(2)}
+        <span style="font-size: 1.25rem">
+          <span style="font-weight:1;color:#BBBBBB">$</span>${(product.Cost / 100).toFixed(2)}
+        </span>
       </a>
       <br>
       <button>Add to Cart <img src="white c.svg" style="height:1rem;"></button>
       `;
       
       productDiv.querySelector('button').addEventListener('click', () => {
-        document.getElementById("icon").src = "notifyc.svg"
-        
         const existingItem = cartItems.find(item => item.name === product.name);
         if (existingItem) {
           existingItem.quantity += 1;

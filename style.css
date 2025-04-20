@@ -15,7 +15,7 @@ body {
 header {
   display: flex;
   justify-content: space-between;
-  font-size: 3rem;
+  font-size: 2rem;
   position: sticky;
   top: 0;
   background-color: white;
@@ -28,7 +28,7 @@ header {
   display: grid;
   gap: 1rem;
   padding: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
 }
 .product {
   transition: all 0.5s ease;
@@ -51,7 +51,7 @@ button {
   background-color: black;
   color: #fff;
   border-radius: 1.25rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-family: "Varela Round", sans-serif;
   cursor: pointer;
   padding: 0.5rem 1rem;
@@ -105,5 +105,5 @@ thead {
   margin-right: 2rem;
   border-radius: 2rem;
   padding-left: 0.75rem;
-  font-size: 3rem;
+  font-size: 2rem;
 }
