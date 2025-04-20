@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>Baby Spinach</title>
+  <title>Japanese Tang Oh</title>
   <link rel="stylesheet" href="../style.css">
   <style>
     img {
@@ -20,19 +20,18 @@
     </a>
   </header>
   <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-    <div style="border-radius: 1.25rem; box-shadow: 0 0 0.5rem; overflow: hidden;">
-      <img src="../Product_images/Baby Spinach (120g).png" style="height: 50vh;" id="bigimage">
+    <div style="border-radius: 1.25rem; box-shadow: 0 0 0.5rem; overflow: hidden; height: 75vh;">
+      <img src="../Product_images/Japanese Tang Oh (150g).png" style="height: 50vh;" id="bigimage">
         <div style="display: flex;">
-          <img class="smolimage" src="../Product_images/Baby Spinach (120g).png" style="height: 16.66vh;" onclick="bigimage.src = '../Product_images/Baby Spinach (120g).png'">
-          <img class="smolimage" src="2.png" style="height: 16.66vh;" onclick="bigimage.src = '2.png'">
-          <img class="smolimage" src="3.png" style="height: 16.66vh;" onclick="bigimage.src = '3.png'">
+          <img class="smolimage" src="../Product_images/Japanese Tang Oh (150g).png" style="height: 25vh;" onclick="bigimage.src = '../Product_images/Japanese Tang Oh (150g).png'">
+          <img class="smolimage" src="2.png" style="height: 25vh;" onclick="bigimage.src = '2.png'">
         </div>
     </div>
     <div style="flex: 1 1">
-      $5.00<br>
-      <h1 style="margin: 0;">Baby Spinach (120g)</h1>
-      Baby spinach is a tender, nutrient-rich leafy green known for its mild flavor and smooth texture. It's perfect for salads, smoothies, and light cooking, offering a good source of vitamins A, C, and K, as well as iron and fiber.<br>
-      <br><b>Place of Origin</b>: Singapore<br><br>
+      $3.50<br>
+      <h1 style="margin: 0;">Japanese Tang Oh (150g)</h1>
+      A fragrant and tender leafy green with a slightly peppery and herbal flavor, perfect for soups, stir-fries, and hot pots.<br>
+      <br>Place of Origin: <b>Singapore</b><br><br>
       <button onclick="addtocart()">Add to Cart <img src="../white c.svg" style="height:1rem; display: inline;"></button>
     </div>
   </div>
@@ -42,14 +41,14 @@
 
     function addtocart() {
       const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-      const existingItem = existingCart.find(item => item.name === "Baby Spinach (120g)");
+      const existingItem = existingCart.find(item => item.name === "Japanese Tang Oh (150g)");
       
       if (existingItem) {
         existingItem.quantity++;
       } else {
         existingCart.push({ 
-          name: "Baby Spinach (120g)", 
-          Cost: 500, // Fixed property name
+          name: "Japanese Tang Oh (150g)", 
+          Cost: 350, // Fixed property name
           Type: "vegetable", // Added type
           quantity: 1 
         });
