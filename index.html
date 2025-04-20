@@ -11,6 +11,13 @@
   <header>
     <img src="dff.png" style="height: 3rem;">
     <input id="search" placeholder="Search products...">
+    <select id="category-filter">
+      <option value="all">All Categories</option>
+      <option value="vegetable" style="background-color: #cbe757;">Vegetables</option>
+      <option value="salad" style="background-color: #e0ffe0;">Salad</option>
+      <option value="duck">Duck</option>
+      <option value="meat" style="background-color: #ffe0e0;">Pork</option>
+    </select>
     <a href="#cart" style="text-decoration: none;color: #000;">
       <img src="c.svg" style="height: 3rem;" id="icon">
     </a>
@@ -59,7 +66,7 @@
     { name: "Romaine Lettuce", Cost: 9999, Type: "vegetable" },
     { name: "Xiao Bai Cai", Cost: 9999, Type: "vegetable" },
     //meats from here on
-    {name: "Brazil Pork loin", Cost: 800, Type: "meat"},
+    {name: "Brazil Pork Loin", Cost: 800, Type: "meat"},
     {name: "Holland Pork Ribs", Cost: 1250, Type: "meat"},
     {name: "German Pork Belly", Cost: 1050, Type: "meat"},
     {name: "Holland Minced Pork", Cost: 540, Type: "meat"},
@@ -70,6 +77,7 @@
     const cartItemsList = document.getElementById('cart-items');
     const cartTotal = document.getElementById('cart-total');
     const searchbar = document.getElementById("search");
+    const categoryFilter = document.getElementById('category-filter');
     
     const cartItems = [];
     
@@ -175,6 +183,7 @@
     products.forEach(product => {
       const productDiv = document.createElement('div');
       productDiv.classList.add('product');
+      productDiv.dataset.category = product.Type;
       productDiv.innerHTML = `
       <a href="${product.name}/index.html">
         <img src="Product_images/${product.name}.png" style="height: 9rem;"> <br>
@@ -209,6 +218,20 @@
         el.style.display = matches ? "" : "none";
       });
     }
+
+    categoryFilter.addEventListener('change', function() {
+      const selectedCategory = this.value;
+      const products = document.querySelectorAll('.product');
+
+      products.forEach(product => {
+        const productCategory = product.dataset.category;
+        if (selectedCategory == 'all' || productCategory == selectedCategory) {
+          product.style.display = '';
+        } else {
+          product.style.display = 'none';
+        }
+      });
+    });
 
     searchbar.addEventListener("keyup",search)
   </script>
