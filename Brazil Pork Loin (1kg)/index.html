@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8" />
-	<title>Brazil Pork Loin</title>
+	<title>Frozen Pork Loin</title>
 	<link rel="stylesheet" href="../style.css">
 	<style>
 		img {
@@ -21,9 +21,9 @@
 	</header>
 	<div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
 		<div style="border-radius: 1.25rem; box-shadow: 0 0 0.5rem; overflow: hidden;">
-			<img src="../Product_images/Brazil Pork Loin (1kg).png" style="width: 50vh;" id="bigimage">
+			<img src="../Product_images/Frozen Pork Loin (1kg).png" style="width: 50vh;" id="bigimage">
 			<div style="display: flex; background-color: #fff;">
-				<img class="smolimage" src="../Product_images/Brazil Pork Loin (1kg).png" style="width: 25%;" onclick="bigimage.src = '../Product_images/Brazil Pork Loin (1kg).png'">
+				<img class="smolimage" src="../Product_images/Frozen Pork Loin (1kg).png" style="width: 25%;" onclick="bigimage.src = '../Product_images/Frozen Pork Loin (1kg).png'">
 				<img class="smolimage" src="2.png" style="width: 25%;" onclick="bigimage.src = '2.png'">
 				<img class="smolimage" src="3.png" style="width: 25%;" onclick="bigimage.src = '3.png'">
 				<img class="smolimage" src="4.png" style="width: 25%;" onclick="bigimage.src = '4.png'">
@@ -31,8 +31,8 @@
 		</div>
 		<div style="flex: 1 1">
 			$8.00<br>
-			<h1 style="margin: 0;">Brazil Pork Loin (1kg)</h1>
-			<br><b>Place of Origin</b>: Brazil<br><br>
+			<h1 style="margin: 0;">Frozen Pork Loin (1kg)</h1>
+			<br><b>Place of Origin</b>: Frozen<br><br>
 			<button onclick="addtocart()">Add to Cart <img src="../white c.svg" style="height:1rem; display: inline;"></button>
 		</div>
 	</div>
@@ -42,13 +42,13 @@
 		
 		function addtocart() {
 			const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-			const existingItem = existingCart.find(item => item.name === "Brazil Pork Loin (1kg)");
+			const existingItem = existingCart.find(item => item.name === "Frozen Pork Loin (1kg)");
 			
 			if (existingItem) {
 				existingItem.quantity++;
 			} else {
 				existingCart.push({ 
-					name: "Brazil Pork Loin (1kg)", 
+					name: "Frozen Pork Loin (1kg)", 
 					Cost: 800, // Fixed property name
 					Type: "pork", // Added type
 					quantity: 1 
