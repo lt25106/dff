@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>Holland Minced Pork (500g)</title>
+  <title>Frozen Minced Pork (500g)</title>
   <link rel="stylesheet" href="../style.css">
   <style>
     img {
@@ -21,9 +21,9 @@
   </header>
   <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
     <div style="border-radius: 1.25rem; box-shadow: 0 0 0.5rem; overflow: hidden; background-color: white; width: 50vh;">
-      <img src="../Product_images/Holland Minced Pork (500g).png" style="width: 50vh;" id="bigimage">
+      <img src="../Product_images/Frozen Minced Pork (500g).png" style="width: 50vh;" id="bigimage">
         <div style="display: flex;">
-          <img class="smolimage" src="../Product_images/Holland Minced Pork (500g).png" style="width: 16.66%;" onclick="bigimage.src = '../Product_images/Holland Minced Pork (500g).png'">
+          <img class="smolimage" src="../Product_images/Frozen Minced Pork (500g).png" style="width: 16.66%;" onclick="bigimage.src = '../Product_images/Frozen Minced Pork (500g).png'">
           <img class="smolimage" src="2.png" style="width: 16.66%;" onclick="bigimage.src = '2.png'">
           <img class="smolimage" src="3.png" style="width: 16.66%;" onclick="bigimage.src = '3.png'">
           <img class="smolimage" src="4.png" style="width: 16.66%;" onclick="bigimage.src = '4.png'">
@@ -33,10 +33,8 @@
     </div>
     <div style="flex: 1 1 15rem">
       $5.40<br>
-      <h1 style="margin: 0;">Holland Minced Pork (500g)</h1><br>
+      <h1 style="margin: 0;">Frozen Minced Pork (500g)</h1><br>
       Storage Condition/Type: <b>Frozen</b><br>
-      Shelf Life: <b>6 Months</b><br>
-      Place of Origin: <b>Holland</b><br>
       Ships from: <b>Singapore</b><br>
       Ingredient: <b>Pork</b><br><br>
 
@@ -49,13 +47,13 @@
 
     function addtocart() {
       const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-      const existingItem = existingCart.find(item => item.name === "Holland Minced Pork (500g)");
+      const existingItem = existingCart.find(item => item.name === "Frozen Minced Pork (500g)");
       
       if (existingItem) {
         existingItem.quantity++;
       } else {
         existingCart.push({ 
-          name: "Holland Minced Pork (500g)", 
+          name: "Frozen Minced Pork (500g)", 
           Cost: 540, // Fixed property name
           Type: "pork", // Added type
           quantity: 1 
