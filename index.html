@@ -39,7 +39,8 @@
         <!-- Cart items will be dynamically inserted here -->
       </tbody>
     </table>
-    <strong><span style="font-weight:1;color:#BBBBBB">Total: $</span><span id="cart-total">0.00</span></strong>
+    <strong><span style="font-weight:1;color:#BBBBBB">Total: $</span><span id="cart-total">0.00</span></strong><br><br>
+    <button id="checkout-button">Checkout</button>
   </div>
   
   <script>
@@ -66,10 +67,10 @@
     { name: "Romaine Lettuce (120g)", Cost: 300, Type: "vegetable" },
     { name: "Xiao Bai Cai (220g)", Cost: 300, Type: "vegetable" },
     //meats from here on
-    {name: "Frozen Pork Loin (1kg)", Cost: 800, Type: "meat"},
-    {name: "Frozen Pork Ribs (1kg)", Cost: 1250, Type: "meat"},
-    {name: "Frozen Pork Belly (1kg)", Cost: 1050, Type: "meat"},
-    {name: "Frozen Minced Pork (500g)", Cost: 540, Type: "meat"},
+    {name: "Frozen Pork Loin (1kg)", Cost: 800, Type: "pork"},
+    {name: "Frozen Pork Ribs (1kg)", Cost: 1250, Type: "pork"},
+    {name: "Frozen Pork Belly (1kg)", Cost: 1050, Type: "pork"},
+    {name: "Frozen Minced Pork (500g)", Cost: 540, Type: "pork"},
     ];
     
     const shopDiv = document.getElementById('shop');
@@ -87,17 +88,17 @@
         updateCartDisplay(); 
       }
     });
-
+    
     if (cartItems != []) {
       document.getElementById("icon").src = "notifyc.svg"
     }
     
     function updateCartDisplay() { // run when a button is pressed
-
+      
       document.getElementById("icon").src = cartItems.length > 0 
-        ? "notifyc.svg" 
-        : "c.svg";
-
+      ? "notifyc.svg" 
+      : "c.svg";
+      
       cartItemsList.style.display = "table" // shows the table
       const cartItemsBody = document.querySelector('#cart-items tbody');
       cartItemsBody.innerHTML = ''; // initializes the table
@@ -145,14 +146,14 @@
         row.appendChild(actionCell);
         
         cartItemsBody.appendChild(row);
-
-          if (item.Type === 'vegetable') {
-            row.style.backgroundColor = '#cbe757'; // Light green for vegetables
-          } else if (item.Type === 'meat') {
-            row.style.backgroundColor = '#ffe0e0'; // Light red for meat
-          } else if (item.Type === 'salad'){
-            row.style.backgroundColor = '#e0ffe0' // Lighter green for salads
-          }
+        
+        if (item.Type === 'vegetable') {
+          row.style.backgroundColor = '#cbe757'; // Light green for vegetables
+        } else if (item.Type === 'pork') {
+          row.style.backgroundColor = '#ffe0e0'; // Light red for meat
+        } else if (item.Type === 'salad'){
+          row.style.backgroundColor = '#e0ffe0' // Lighter green for salads
+        }
       });
       
       cartTotal.textContent = (total / 100).toFixed(2);
@@ -206,22 +207,22 @@
       });
       shopDiv.appendChild(productDiv);
     });
-
+    
     function search() {
       const stuff = document.getElementsByClassName("product");
       const searchWords = searchbar.value.toLowerCase().split(" ").filter(Boolean); // split by space and remove empty
-
+      
       Array.from(stuff).forEach(el => {
         const text = el.textContent.toLowerCase();
         const matches = searchWords.every(word => text.includes(word)); // all words must be found
         el.style.display = matches ? "" : "none";
       });
     }
-
+    
     categoryFilter.addEventListener('change', function() {
       const selectedCategory = this.value;
       const products = document.querySelectorAll('.product');
-
+      
       products.forEach(product => {
         const productCategory = product.dataset.category;
         if (selectedCategory == 'all' || productCategory == selectedCategory) {
@@ -232,6 +233,14 @@
       });
     });
     searchbar.addEventListener("keyup",search)
+    
+    document.getElementById('checkout-button').addEventListener('click', () => {
+      // Save the current cart to localStorage
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      // Redirect to the checkout page
+      window.location.href = 'checkout.html';
+    });
+    
   </script>
 </body>
 </html>
