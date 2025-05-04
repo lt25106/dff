@@ -43,6 +43,7 @@
     <button id="checkout-button">Checkout</button>
   </div>
   
+  <script src="script.js"></script>
   <script>
     const products = [
     { name: "Baby Spinach (120g)", Cost: 500, Type: "vegetable" },
@@ -238,7 +239,7 @@
       // Save the current cart to localStorage
       localStorage.setItem('cart', JSON.stringify(cartItems));
       // Redirect to the checkout page
-      window.location.href = 'checkout.html';
+      window.location.href = 'Checkout/index.html';
     });
     
   </script>

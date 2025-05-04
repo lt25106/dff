@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    table {
+      width: 100%;
+    }
+    th {
+      text-align: left;
+      font-weight: 100;
+    }
+    .vegetable {
+      background-color: #cbe757;
+    }
+    .pork {
+      background-color: #ffe0e0;
+    }
+    .salad {
+      background-color: #e0ffe0;
+    }
+    h1 {
+      margin: 0;
+      padding: 0;
+    }
+    #logo {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      height: 3rem;
+      box-shadow: 0 0 0.5rem;
+    }
+    #freegift {
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <a href="../index.html">
+    <img src="../dff.png" id="logo">
+  </a> 
+  <div id="cart">
+    <h1>Checkout</h1>
+    <table id="checkout-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Cart items will be inserted here -->
+      </tbody>
+      <tfoot>
+        <tr style="background-color: white;">
+          <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+          <td id="checkout-total">$0.00</td>
+        </tr>
+      </tfoot>
+    </table>
+    <span id="freegift">
+      Here's a free gift for spending $100!<br><br>
+      <div class="product">
+        <img src="../Product_images/Baby Spinach (120g).png" style="height: 9rem;">
+        <h2>Baby Spinach (120g)</h2>
+        <span style="font-size: 1.25rem">
+          <span style="font-weight:1;color:#BBBBBB">$<s>5.00</span></s> 0.00
+        </span>
+        <br><button>Add to Cart <img src="../white c.svg" style="height:1rem;"></button>
+      </div>
+    </span>
+  </div>
+
+  <script src="../script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  const tableBody = document.querySelector('#checkout-table tbody');
+  const totalCell = document.getElementById('checkout-total');
+  const freeGiftButton = document.querySelector('#freegift button'); // Select the free gift button
+  let total = 0;
+
+  function updateTotalAndSubtotals() {
+    total = 0;
+
+    // Clear the table body before re-rendering
+    tableBody.innerHTML = '';
+
+    cartItems.forEach((item, index) => {
+      const row = document.createElement('tr');
+      row.className = item.Type;
+
+      const nameCell = document.createElement('td');
+      nameCell.textContent = item.name;
+      row.appendChild(nameCell);
+
+      const priceCell = document.createElement('td');
+      priceCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(item.Cost / 100).toFixed(2)}`;
+      row.appendChild(priceCell);
+
+      const quantityCell = document.createElement('td');
+      const quantityInput = document.createElement('input');
+      quantityInput.type = 'number';
+      quantityInput.min = '1';
+      quantityInput.value = item.quantity;
+      quantityInput.classList.add('quantity-input');
+      quantityInput.dataset.index = index;
+      quantityCell.appendChild(quantityInput);
+      row.appendChild(quantityCell);
+
+      const subtotal = item.Cost * item.quantity;
+      total += subtotal;
+      const subtotalCell = document.createElement('td');
+      subtotalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(subtotal / 100).toFixed(2)}`;
+      row.appendChild(subtotalCell);
+
+      tableBody.appendChild(row);
+    });
+
+    // Re-attach event listeners to quantity inputs
+    document.querySelectorAll('.quantity-input').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const index = e.target.dataset.index;
+        const newQuantity = parseInt(e.target.value, 10);
+        if (newQuantity > 0) {
+          cartItems[index].quantity = newQuantity;
+          updateTotalAndSubtotals(); // Recalculate totals and update the display
+        }
+      });
+    });
+
+    totalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(total / 100).toFixed(2)}`;
+    localStorage.setItem('cart', JSON.stringify(cartItems)); // Save updated cart to localStorage
+
+    // Show or hide the free gift based on the total
+    if (total > 10000) {
+      document.getElementById('freegift').style.display = 'block';
+    } else {
+      document.getElementById('freegift').style.display = 'none';
+    }
+  }
+
+  // Add event listener to the free gift button
+  freeGiftButton.addEventListener('click', () => {
+    const freeGift = {
+      name: "Baby Spinach (120g)",
+      Cost: 0, // Free gift, so cost is 0
+      Type: "vegetable",
+      quantity: 1
+    };
+
+    // Check if the free gift is already in the cart
+    const existingItem = cartItems.find(item => item.name === freeGift.name);
+    if (existingItem) {
+      existingItem.quantity += 1; // Increment quantity if it already exists
+    } else {
+      cartItems.push(freeGift); // Add the free gift to the cart
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cartItems)); // Save updated cart to localStorage
+    updateTotalAndSubtotals(); // Update the cart display
+  });
+
+  cartItems.forEach((item, index) => {
+    const row = document.createElement('tr');
+    row.className = item.Type;
+
+    const nameCell = document.createElement('td');
+    nameCell.textContent = item.name;
+    row.appendChild(nameCell);
+
+    const priceCell = document.createElement('td');
+    priceCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(item.Cost / 100).toFixed(2)}`;
+    row.appendChild(priceCell);
+
+    const quantityCell = document.createElement('td');
+    const quantityInput = document.createElement('input');
+    quantityInput.type = 'number';
+    quantityInput.min = '1';
+    quantityInput.value = item.quantity;
+    quantityInput.classList.add('quantity-input');
+    quantityInput.dataset.index = index;
+    quantityInput.addEventListener('change', updateTotalAndSubtotals); // Add event listener
+    quantityCell.appendChild(quantityInput);
+    row.appendChild(quantityCell);
+
+    const subtotal = item.Cost * item.quantity;
+    total += subtotal;
+    const subtotalCell = document.createElement('td');
+    subtotalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(subtotal / 100).toFixed(2)}`;
+    row.appendChild(subtotalCell);
+
+    tableBody.appendChild(row);
+  });
+  totalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(total / 100).toFixed(2)}`;
+});
+  </script>
+</body>
+</html>
+
