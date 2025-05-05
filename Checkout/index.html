@@ -36,6 +36,10 @@
       display: none;
       text-align: center;
     }
+    h1 {
+      margin: 0;
+      padding: 0;
+    }
   </style>
 </head>
 <body>
@@ -43,7 +47,7 @@
     <img src="../dff.png" id="logo">
   </a> 
   <div id="cart">
-    <h1>Checkout</h1>
+    <h1>Checkout <img src="../c.svg" style="height: 2rem;"></h1>
     <table id="checkout-table">
       <thead>
         <tr>
@@ -51,6 +55,7 @@
           <th>Price</th>
           <th>Quantity</th>
           <th>Subtotal</th>
+          <th></th> <!-- Add this line -->
         </tr>
       </thead>
       <tbody>
@@ -64,141 +69,154 @@
       </tfoot>
     </table>
     <span id="freegift">
-      Here's a free gift for spending $100!<br><br>
-      <div class="product">
-        <img src="../Product_images/Baby Spinach (120g).png" style="height: 9rem;">
-        <h2>Baby Spinach (120g)</h2>
-        <span style="font-size: 1.25rem">
-          <span style="font-weight:1;color:#BBBBBB">$<s>5.00</span></s> 0.00
-        </span>
-        <br><button>Add to Cart <img src="../white c.svg" style="height:1rem;"></button>
+      <h1>Here's a free gift for spending $100!</h1>
+      <div id="shop">
+        <div class="product">
+          <img src="../Product_images/Baby Spinach (120g).png" style="height: 9rem;">
+          <h2>Baby Spinach (120g)</h2>
+          <span style="font-size: 1.25rem">
+            <span style="font-weight:1;color:#BBBBBB">$<s>5.00</span></s> 0.00
+          </span>
+          <br><button onclick="addtocart('Baby Spinach (120g)', 'vegetable')">Add to Cart <img src="../white c.svg" style="height:1rem;"></button>
+        </div>
+        <div class="product">
+          <img src="../Product_images/Frozen Minced Pork (500g).png" style="height: 9rem;">
+          <h2>Frozen Minced Pork (500g)</h2>
+          <span style="font-size: 1.25rem">
+            <span style="font-weight:1;color:#BBBBBB">$<s>5.40</span></s> 0.00
+          </span>
+          <br><button onclick="addtocart('Frozen Minced Pork (500g)', 'pork')">Add to Cart <img src="../white c.svg" style="height:1rem;"></button>
+        </div>
       </div>
     </span>
   </div>
   
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-  const tableBody = document.querySelector('#checkout-table tbody');
-  const totalCell = document.getElementById('checkout-total');
-  const freeGiftButton = document.querySelector('#freegift button'); // Select the free gift button
-  let total = 0;
+    let cartItems = [];
+    let tableBody;
+    let totalCell;
+    let total = 0;
 
-  function updateTotalAndSubtotals() {
-    total = 0;
+    function updateTotalAndSubtotals() {
+      total = 0;
+      tableBody.innerHTML = '';
 
-    // Clear the table body before re-rendering
-    tableBody.innerHTML = '';
-
-    cartItems.forEach((item, index) => {
-      const row = document.createElement('tr');
-      row.className = item.Type;
-
-      const nameCell = document.createElement('td');
-      nameCell.textContent = item.name;
-      row.appendChild(nameCell);
-
-      const priceCell = document.createElement('td');
-      priceCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(item.Cost / 100).toFixed(2)}`;
-      row.appendChild(priceCell);
-
-      const quantityCell = document.createElement('td');
-      const quantityInput = document.createElement('input');
-      quantityInput.type = 'number';
-      quantityInput.min = '1';
-      quantityInput.value = item.quantity;
-      quantityInput.classList.add('quantity-input');
-      quantityInput.dataset.index = index;
-      quantityCell.appendChild(quantityInput);
-      row.appendChild(quantityCell);
-
-      const subtotal = item.Cost * item.quantity;
-      total += subtotal;
-      const subtotalCell = document.createElement('td');
-      subtotalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(subtotal / 100).toFixed(2)}`;
-      row.appendChild(subtotalCell);
-
-      tableBody.appendChild(row);
-    });
-
-    // Re-attach event listeners to quantity inputs
-    document.querySelectorAll('.quantity-input').forEach(input => {
-      input.addEventListener('change', (e) => {
-        const index = e.target.dataset.index;
-        const newQuantity = parseInt(e.target.value, 10);
-        if (newQuantity > 0) {
-          cartItems[index].quantity = newQuantity;
-          updateTotalAndSubtotals(); // Recalculate totals and update the display
+      // Remove free gifts if total is below threshold
+      let needsGiftRemoval = false;
+      if (cartItems.some(item => item.Cost === 0)) {
+        const tempTotal = cartItems
+          .filter(item => item.Cost !== 0)
+          .reduce((sum, item) => sum + item.Cost * item.quantity, 0);
+        if (tempTotal < 10000) {
+          // Remove free gifts
+          for (let i = cartItems.length - 1; i >= 0; i--) {
+            if (cartItems[i].Cost === 0) cartItems.splice(i, 1);
+          }
+          localStorage.setItem('cart', JSON.stringify(cartItems));
+          // Don't call updateTotalAndSubtotals() recursively!
         }
+      }
+
+      cartItems.forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.className = item.Type;
+
+        const nameCell = document.createElement('td');
+        nameCell.textContent = item.name;
+        row.appendChild(nameCell);
+
+        const priceCell = document.createElement('td');
+        priceCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(item.Cost / 100).toFixed(2)}`;
+        row.appendChild(priceCell);
+
+        const quantityCell = document.createElement('td');
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.min = '1';
+        quantityInput.value = item.quantity;
+        quantityInput.classList.add('quantity-input');
+        quantityInput.dataset.index = index;
+
+        if (item.Cost == 0) {
+          quantityInput.disabled = true;
+        }
+
+        quantityCell.appendChild(quantityInput);
+        row.appendChild(quantityCell);
+
+        const subtotal = item.Cost * item.quantity;
+        total += subtotal;
+        const subtotalCell = document.createElement('td');
+        subtotalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(subtotal / 100).toFixed(2)}`;
+        row.appendChild(subtotalCell);
+
+        const actionCell = document.createElement('td');
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.classList.add('remove-button');
+        removeButton.dataset.index = index;
+        actionCell.appendChild(removeButton);
+        row.appendChild(actionCell);
+
+        tableBody.appendChild(row);
       });
-    });
 
-    totalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(total / 100).toFixed(2)}`;
-    localStorage.setItem('cart', JSON.stringify(cartItems)); // Save updated cart to localStorage
+      document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', (e) => {
+          const index = e.target.dataset.index;
+          const newQuantity = parseInt(e.target.value, 10);
+          if (newQuantity > 0) {
+            cartItems[index].quantity = newQuantity;
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            updateTotalAndSubtotals();
+          }
+        });
+      });
 
-    // Show or hide the free gift based on the total
-    if (total > 10000) {
-      document.getElementById('freegift').style.display = 'block';
-    } else {
+      document.querySelectorAll('.remove-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+          cartItems.splice(e.target.dataset.index, 1);
+          localStorage.setItem('cart', JSON.stringify(cartItems));
+          updateTotalAndSubtotals();
+        });
+      });
+
+      totalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(total / 100).toFixed(2)}`;
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+
+      // Show or hide the free gift based on the total
+      if ((total < 10000) || cartItems.some(item => item.Cost == 0)) {
+        document.getElementById('freegift').style.display = 'none';
+      } else {
+        document.getElementById('freegift').style.display = 'block';
+      }
+    }
+    
+    function addtocart(name, type) {
+      let localCart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingItem = localCart.find(item => item.name == name && item.Cost == 0); // Check for Cost 0
+      if (existingItem) {
+        existingItem.quantity = 1;
+      } else {
+        localCart.push({
+          name: name,
+          Cost: 0,
+          Type: type,
+          quantity: 1
+        });
+      }
+      localStorage.setItem('cart', JSON.stringify(localCart));
+      cartItems = localCart; // Update global variable
+      updateTotalAndSubtotals();
       document.getElementById('freegift').style.display = 'none';
     }
-  }
-
-  // Add event listener to the free gift button
-  freeGiftButton.addEventListener('click', () => {
-    const freeGift = {
-      name: "Baby Spinach (120g)",
-      Cost: 0, // Free gift, so cost is 0
-      Type: "vegetable",
-      quantity: 1
-    };
-
-    // Check if the free gift is already in the cart
-    const existingItem = cartItems.find(item => item.name === freeGift.name);
-    if (existingItem) {
-      existingItem.quantity += 1; // Increment quantity if it already exists
-    } else {
-      cartItems.push(freeGift); // Add the free gift to the cart
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cartItems)); // Save updated cart to localStorage
-    updateTotalAndSubtotals(); // Update the cart display
-  });
-
-  cartItems.forEach((item, index) => {
-    const row = document.createElement('tr');
-    row.className = item.Type;
-
-    const nameCell = document.createElement('td');
-    nameCell.textContent = item.name;
-    row.appendChild(nameCell);
-
-    const priceCell = document.createElement('td');
-    priceCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(item.Cost / 100).toFixed(2)}`;
-    row.appendChild(priceCell);
-
-    const quantityCell = document.createElement('td');
-    const quantityInput = document.createElement('input');
-    quantityInput.type = 'number';
-    quantityInput.min = '1';
-    quantityInput.value = item.quantity;
-    quantityInput.classList.add('quantity-input');
-    quantityInput.dataset.index = index;
-    quantityInput.addEventListener('change', updateTotalAndSubtotals); // Add event listener
-    quantityCell.appendChild(quantityInput);
-    row.appendChild(quantityCell);
-
-    const subtotal = item.Cost * item.quantity;
-    total += subtotal;
-    const subtotalCell = document.createElement('td');
-    subtotalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(subtotal / 100).toFixed(2)}`;
-    row.appendChild(subtotalCell);
-
-    tableBody.appendChild(row);
-  });
-  totalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(total / 100).toFixed(2)}`;
-});
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+      tableBody = document.querySelector('#checkout-table tbody');
+      totalCell = document.getElementById('checkout-total');
+      updateTotalAndSubtotals();
+    });
   </script>
 </body>
 </html>
-
