@@ -154,6 +154,10 @@
         } else if (item.Type === 'salad'){
           row.style.backgroundColor = '#e0ffe0' // Lighter green for salads
         }
+        
+        if (item.Cost == 0) {
+          quantityInput.disabled = true;
+        }
       });
       
       cartTotal.textContent = (total / 100).toFixed(2);
