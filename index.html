@@ -182,6 +182,12 @@
           updateCartDisplay();
         });
       });
+
+      if (cartTotal.textContent <= 0) {
+        document.getElementById("checkout-button").style.display = "none"; // hides checkout button if cart is empty
+      } else {
+        document.getElementById("checkout-button").style.display = "block"; // shows checkout button if cart is not empty
+      }
     }
     
     products.forEach(product => {

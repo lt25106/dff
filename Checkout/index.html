@@ -44,6 +44,9 @@
     #fromgiftdiv {
       text-align: center;
     }
+    #fromgift {
+      color: #54ab5a;
+    }
   </style>
 </head>
 <body>
@@ -73,9 +76,9 @@
       </tfoot>
     </table>
     <h1 id="fromgiftdiv">
-      You are 
-      <span style="font-weight:1;color:#BBBBBB">$</span><span id="fromgift"></span> 
-      from a free gift! <img src="gift.svg" style="height: 2rem;">
+      Spend only 
+      <span id="fromgift"></span> 
+      more to redeem a free gift! <img src="gift.svg" style="height: 2rem;">
     </h1>
     <span id="freegift">
       <h1>Here's a free gift for spending $100! <img src="gift.svg" style="height: 2rem;"></h1>
@@ -194,15 +197,19 @@
       localStorage.setItem('cart', JSON.stringify(cartItems));
 
       // Show or hide the free gift based on the total
-      if ((total < 10000) || cartItems.some(item => item.Cost == 0)) {
-        document.getElementById('freegift').style.display = 'none';
-        document.getElementById('fromgiftdiv').style.display = 'block';
+      const hasFreeGift = cartItems.some(item => item.Cost == 0);
+      const freeGiftDiv = document.getElementById('freegift');
+      const fromGiftDiv = document.getElementById('fromgiftdiv');
+
+      if (total < 10000 || hasFreeGift) {
+        freeGiftDiv.style.display = 'none';
+        fromGiftDiv.style.display = (total > 8000) ? 'block' : 'none';
       } else {
-        document.getElementById('freegift').style.display = 'block';
-        document.getElementById('fromgiftdiv').style.display = 'none';
+        freeGiftDiv.style.display = 'block';
+        fromGiftDiv.style.display = 'none';
       }
 
-      document.getElementById('fromgift').textContent = ((10000-total)/100).toFixed(2);
+      document.getElementById('fromgift').textContent = "$" + ((10000-total)/100).toFixed(2);
     }
     
     function addtocart(name, type) {
