@@ -206,7 +206,7 @@
         fromGiftDiv.style.display = 'block';
         freeGiftDiv.style.display = 'none';
         fromgift.textContent = "$" + ((10000 - total) / 100).toFixed(2);
-      } else if (total >= 10000) {
+      } else if (total >= 10000 && !hasFreeGift) {
         freeGiftDiv.style.display = 'block';
         fromGiftDiv.style.display = 'none';
       } else {
