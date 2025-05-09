@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html style="height: 100%;">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <head>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
@@ -61,6 +62,7 @@
         }
         alert("Login successful ✅");
         loading.style.display = "none";
+        window.location.href = "../Checkout/index.html";
       })
       .catch((error) => {
         alert(error.message);
@@ -118,15 +120,18 @@
       }
     });
   </script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
   <style>
-    body {
+    html, body {
       text-align: center;
-      background-repeat: no-repeat;
-      background-size: cover;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
     }
     h2 {
       font-size: 3rem;
+      margin: 0;
+      padding: 0;
     }
     p {
       font-size: 2rem;
@@ -134,6 +139,7 @@
     input {
       font-size: 3rem;
       border-radius: 1rem;
+      max-width: 95%;
     }
     span {
       display: none;
@@ -154,30 +160,25 @@
     }
     button {
       font-size: 3rem;
-      border-radius: 1rem;
-      transition: all 0.2s ease;
-      margin-left: 1rem;
-      margin-right: 1rem;
     }
     button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 1rem;
-    }
-    button:active {
-      transform: scale(0.9);
-      box-shadow: 0 0 0;
+      scale: 1.05;
     }
   </style>
 </head>
 <body>
-  <h2>Login / Sign Up</h2>
+  <br>
+  <a href="../index.html">
+    <img src="dff.png" style="height: 11rem;">
+  </a>
+  <h2>Login / Sign Up</h2><br>
   <input type="email" id="email" placeholder="Email" /><br><br>
   <input type="password" id="password" placeholder="Password" /><br><br>
-  <button id="signUp" onclick="signUp()">Sign Up 📝</button>
-  <button id="signIn" onclick="signIn()">Sign In 🔑</button>
-  <button id="signOut" onclick="signOut()">Sign Out ↩️</button>
+  <button id="signUp" onclick="signUp()">Sign Up <img src="signup.svg" style="height: 3rem;"></button>&nbsp;&nbsp;
+  <button id="signIn" onclick="signIn()">Sign In <img src="signin.svg" style="height: 3rem;"></button>
+  <button id="signOut" onclick="signOut()">Sign Out ↩</button>
   <br><span><div></div></span>
   <p id="user-status"></p>
-  <button id="resetBtn" onclick="resetPassword()">Forgot Password</button>
+  <button id="resetBtn" onclick="resetPassword()">Forgot Password <img src="forgot.svg" style="height: 3rem;"></button>
 </body>
 </html>
