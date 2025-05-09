@@ -14,13 +14,12 @@
     } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyD_0vLx_LR9WQRQCVzxEr92gfnly0PKAIY",
-      authDomain: "fir-test-host-45842.firebaseapp.com",
-      databaseURL: "https://fir-test-host-45842-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "fir-test-host-45842",
-      storageBucket: "fir-test-host-45842.firebasestorage.app",
-      messagingSenderId: "127544482309",
-      appId: "1:127544482309:web:175d9f67acf7b17ebc1a6c"
+      apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
+      authDomain: "dffenterprise-3f446.firebaseapp.com",
+      projectId: "dffenterprise-3f446",
+      storageBucket: "dffenterprise-3f446.firebasestorage.app",
+      messagingSenderId: "98928528109",
+      appId: "1:98928528109:web:01bcd20d47abd534219ae4"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -119,11 +118,10 @@
       }
     });
   </script>
+  <link rel="stylesheet" href="style.css">
   <style>
     body {
       text-align: center;
-      font-family: sans-serif;
-      background-image: linear-gradient(to left top, #49A77E, #57AD10);
       background-repeat: no-repeat;
       background-size: cover;
     }
@@ -178,7 +176,7 @@
   <button id="signUp" onclick="signUp()">Sign Up 📝</button>
   <button id="signIn" onclick="signIn()">Sign In 🔑</button>
   <button id="signOut" onclick="signOut()">Sign Out ↩️</button>
-  <br><br><span><div></div></span>
+  <br><span><div></div></span>
   <p id="user-status"></p>
   <button id="resetBtn" onclick="resetPassword()">Forgot Password</button>
 </body>
