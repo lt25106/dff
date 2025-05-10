@@ -37,7 +37,7 @@
         .then((userCredential) => {
           sendEmailVerification(userCredential.user);
           auth.signOut();
-          alert("Signup successful ✅ - Verification email sent!");
+          alert("Signup successful - Verification email sent");
           loading.style.display = "none";
         })
         .catch((error) => {
@@ -60,7 +60,7 @@
           signOut(auth);
           return;
         }
-        alert("Login successful ✅");
+        alert("Login successful");
         loading.style.display = "none";
         window.location.href = "../Checkout/index.html";
       })
@@ -73,7 +73,7 @@
     window.signOut = () => {
       signOut(auth)
         .then(() => {
-          alert("Signed out 👋");
+          alert("Signed out");
         })
         .catch((error) => {
           alert(error.message);
