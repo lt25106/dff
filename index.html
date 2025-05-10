@@ -8,6 +8,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <span id="langchoose">
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 3;"></div>
+    <div style="position: fixed; bottom: 50%; right: 50%; background-color: white; padding: 1rem; font-size: 2rem; transform: translate(50%, 50%); z-index: 4; border-radius: 1.25rem; box-shadow: 0 0 0.5rem;">
+      Choose your language:
+      <button class="hover" onclick="document.getElementById('langchoose').style.display = 'none' ">English</button>
+      <button class="hover" onclick="chinese = true; document.getElementById('langchoose').style.display = 'none';">中文</button>
+    </div>
+  </span>
   <header>
     <img src="dff.png" style="height: 3rem;">
     <input id="search" placeholder="Search products...">
@@ -45,32 +53,32 @@
   
   <script>
     const products = [
-    { name: "Baby Spinach (120g)", Cost: 500, Type: "vegetable" },
-    { name: "Bayam Red Spinach (250g)", Cost: 250, Type: "vegetable" },
-    { name: "Big Leaf Tang Oh", Cost: 10000, Type: "vegetable" },
-    { name: "Chye Sim (200g)", Cost: 300, Type: "vegetable" },
-    { name: "Coriander (60g)", Cost: 250, Type: "vegetable" },
-    { name: "Ice Plant Salad", Cost: 500, Type: "salad" },
-    { name: "Ice Plant (80g)", Cost: 350, Type: "vegetable" },
-    { name: "Japanese Tang Oh (150g)", Cost: 350, Type: "vegetable" },
-    { name: "Kailan (150g)", Cost: 250, Type: "vegetable" },
-    { name: "Kale Salad", Cost: 9999, Type: "salad" },
-    { name: "Kale (120g)", Cost: 400, Type: "vegetable" },
-    { name: "Kang Kong (250g)", Cost: 250, Type: "vegetable" },
-    { name: "Komatsuna (200g)", Cost: 350, Type: "vegetable" },
-    { name: "Crystal Lettuce (120g)", Cost: 200, Type: "vegetable" },
-    { name: "Mesclun Salad (150g)", Cost: 350, Type: "salad" },
-    { name: "Nai Bai (220g)", Cost: 300, Type: "vegetable" },
-    { name: "Red Lettuce (120g)", Cost: 300, Type: "vegetable" },
-    { name: "Red Radish (150g)", Cost: 300, Type: "vegetable" },
-    { name: "Arugula (60g)", Cost: 300, Type: "vegetable" },
-    { name: "Romaine Lettuce (120g)", Cost: 300, Type: "vegetable" },
-    { name: "Xiao Bai Cai (220g)", Cost: 300, Type: "vegetable" },
+    { name: "Baby Spinach (120g)", chname: "菠菜", Cost: 500, Type: "vegetable" },
+    { name: "Bayam Red Spinach (250g)", chname: "苋菜", Cost: 250, Type: "vegetable" },
+    { name: "Big Leaf Tang Oh", chname: "茼蒿", Cost: 10000, Type: "vegetable" },
+    { name: "Chye Sim (200g)", chname: "菜心", Cost: 300, Type: "vegetable" },
+    { name: "Coriander (60g)", chname: "香菜", Cost: 250, Type: "vegetable" },
+    { name: "Ice Plant Salad", chname: "冰菜沙拉", Cost: 500, Type: "salad" },
+    { name: "Ice Plant (80g)", chname: "冰菜", Cost: 350, Type: "vegetable" },
+    { name: "Japanese Tang Oh (150g)", chname: "春菊", Cost: 350, Type: "vegetable" },
+    { name: "Kailan (150g)", chname: "芥蓝", Cost: 250, Type: "vegetable" },
+    { name: "Kale Salad", chname: "羽衣甘蓝沙拉", Cost: 9999, Type: "salad" },
+    { name: "Kale (120g)", chname: "羽衣甘蓝", Cost: 400, Type: "vegetable" },
+    { name: "Kang Kong (250g)", chname: "空心菜", Cost: 250, Type: "vegetable" },
+    { name: "Komatsuna (200g)", chname: "小松菜", Cost: 350, Type: "vegetable" },
+    { name: "Crystal Lettuce (120g)", chname: "水晶生菜", Cost: 200, Type: "vegetable" },
+    { name: "Mesclun Salad (150g)", chname: "混合沙拉", Cost: 350, Type: "salad" },
+    { name: "Nai Bai (220g)", chname: "奶白菜", Cost: 300, Type: "vegetable" },
+    { name: "Red Lettuce (120g)", chname: "红生菜", Cost: 300, Type: "vegetable" },
+    { name: "Red Radish (150g)", chname: "红萝卜", Cost: 300, Type: "vegetable" },
+    { name: "Arugula (60g)", chname: "芝麻菜", Cost: 300, Type: "vegetable" },
+    { name: "Romaine Lettuce (120g)", chname: "罗马生菜", Cost: 300, Type: "vegetable" },
+    { name: "Xiao Bai Cai (220g)", chname: "小白菜", Cost: 300, Type: "vegetable" },
     //meats from here on
-    {name: "Frozen Pork Loin (1kg)", Cost: 800, Type: "pork"},
-    {name: "Frozen Pork Ribs (1kg)", Cost: 1250, Type: "pork"},
-    {name: "Frozen Pork Belly (1kg)", Cost: 1050, Type: "pork"},
-    {name: "Frozen Minced Pork (500g)", Cost: 540, Type: "pork"},
+    {name: "Frozen Pork Loin (1kg)", chname: "冷冻猪里脊", Cost: 800, Type: "pork"},
+    {name: "Frozen Pork Ribs (1kg)", chname: "冷冻猪肋骨", Cost: 1250, Type: "pork"},
+    {name: "Frozen Pork Belly (1kg)", chname: "冷冻猪五花肉", Cost: 1050, Type: "pork"},
+    {name: "Frozen Minced Pork (500g)", chname: "冷冻猪肉末", Cost: 540, Type: "pork"},
     ];
     
     const shopDiv = document.getElementById('shop');
@@ -78,8 +86,8 @@
     const cartTotal = document.getElementById('cart-total');
     const searchbar = document.getElementById("search");
     const categoryFilter = document.getElementById('category-filter');
-    
     const cartItems = [];
+    let chinese = false;
     
     document.addEventListener('DOMContentLoaded', () => {
       const savedCart = localStorage.getItem('cart');
@@ -182,7 +190,7 @@
           updateCartDisplay();
         });
       });
-
+      
       if (cartTotal.textContent <= 0) {
         document.getElementById("checkout-button").style.display = "none"; // hides checkout button if cart is empty
       } else {
@@ -190,14 +198,18 @@
       }
     }
     
-    products.forEach(product => {
-      const productDiv = document.createElement('div');
-      productDiv.classList.add('product');
-      productDiv.dataset.category = product.Type;
-      productDiv.innerHTML = `
+    function showproducts() {
+      products.forEach(product => {
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product');
+        productDiv.dataset.category = product.Type;
+        
+        const name = chinese ? product.chname : product.name;
+        
+        productDiv.innerHTML = `
       <a href="${product.name}/index.html">
         <img src="Product_images/${product.name}.png" style="height: 9rem;"> <br>
-        <h2>${product.name}</h2>
+        <h2>${name}</h2>
         <span style="font-size: 1.25rem">
           <span style="font-weight:1;color:#BBBBBB">$</span>${(product.Cost / 100).toFixed(2)}
         </span>
@@ -205,18 +217,19 @@
       <br>
       <button>Add to Cart <img src="white c.svg" style="height:1rem;"></button>
       `;
-      
-      productDiv.querySelector('button').addEventListener('click', () => {
-        const existingItem = cartItems.find(item => item.name === product.name);
-        if (existingItem) {
-          existingItem.quantity += 1;
-        } else {
-          cartItems.push({ ...product, quantity: 1 });
-        }
-        updateCartDisplay();
+        
+        productDiv.querySelector('button').addEventListener('click', () => {
+          const existingItem = cartItems.find(item => item.name === product.name);
+          if (existingItem) {
+            existingItem.quantity += 1;
+          } else {
+            cartItems.push({ ...product, quantity: 1 });
+          }
+          updateCartDisplay();
+        });
+        shopDiv.appendChild(productDiv);
       });
-      shopDiv.appendChild(productDiv);
-    });
+    }
     
     function search() {
       const stuff = document.getElementsByClassName("product");
