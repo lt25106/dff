@@ -116,6 +116,3 @@ select {
   box-sizing: border-box;
   transition: all 0.2s ease;
 }
-.hover:hover {
-  scale: 1.05;
-}
