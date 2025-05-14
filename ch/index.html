@@ -45,32 +45,32 @@
   
   <script>
     const products = [
-    { name: "Baby Spinach (120g)", chname: "菠菜", Cost: 500, Type: "vegetable" },
-    { name: "Bayam Red Spinach (250g)", chname: "苋菜", Cost: 250, Type: "vegetable" },
+    { name: "Baby Spinach (120g)", chname: "菠菜（120克）", Cost: 500, Type: "vegetable" },
+    { name: "Bayam Red Spinach (250g)", chname: "苋菜（250克）", Cost: 250, Type: "vegetable" },
     { name: "Big Leaf Tang Oh", chname: "茼蒿", Cost: 10000, Type: "vegetable" },
-    { name: "Chye Sim (200g)", chname: "菜心", Cost: 300, Type: "vegetable" },
-    { name: "Coriander (60g)", chname: "香菜", Cost: 250, Type: "vegetable" },
+    { name: "Chye Sim (200g)", chname: "菜心（200克）", Cost: 300, Type: "vegetable" },
+    { name: "Coriander (60g)", chname: "香菜（60克）", Cost: 250, Type: "vegetable" },
     { name: "Ice Plant Salad", chname: "冰菜沙拉", Cost: 500, Type: "salad" },
-    { name: "Ice Plant (80g)", chname: "冰菜", Cost: 350, Type: "vegetable" },
-    { name: "Japanese Tang Oh (150g)", chname: "春菊", Cost: 350, Type: "vegetable" },
-    { name: "Kailan (150g)", chname: "芥蓝", Cost: 250, Type: "vegetable" },
+    { name: "Ice Plant (80g)", chname: "冰菜（80克）", Cost: 350, Type: "vegetable" },
+    { name: "Japanese Tang Oh (150g)", chname: "春菊（150克）", Cost: 350, Type: "vegetable" },
+    { name: "Kailan (150g)", chname: "芥蓝（150克）", Cost: 250, Type: "vegetable" },
     { name: "Kale Salad", chname: "羽衣甘蓝沙拉", Cost: 9999, Type: "salad" },
-    { name: "Kale (120g)", chname: "羽衣甘蓝", Cost: 400, Type: "vegetable" },
-    { name: "Kang Kong (250g)", chname: "空心菜", Cost: 250, Type: "vegetable" },
-    { name: "Komatsuna (200g)", chname: "小松菜", Cost: 350, Type: "vegetable" },
-    { name: "Crystal Lettuce (120g)", chname: "水晶生菜", Cost: 200, Type: "vegetable" },
-    { name: "Mesclun Salad (150g)", chname: "混合沙拉", Cost: 350, Type: "salad" },
-    { name: "Nai Bai (220g)", chname: "奶白菜", Cost: 300, Type: "vegetable" },
-    { name: "Red Lettuce (120g)", chname: "红生菜", Cost: 300, Type: "vegetable" },
-    { name: "Red Radish (150g)", chname: "红萝卜", Cost: 300, Type: "vegetable" },
-    { name: "Arugula (60g)", chname: "芝麻菜", Cost: 300, Type: "vegetable" },
-    { name: "Romaine Lettuce (120g)", chname: "罗马生菜", Cost: 300, Type: "vegetable" },
-    { name: "Xiao Bai Cai (220g)", chname: "小白菜", Cost: 300, Type: "vegetable" },
+    { name: "Kale (120g)", chname: "羽衣甘蓝（120克）", Cost: 400, Type: "vegetable" },
+    { name: "Kang Kong (250g)", chname: "空心菜（250克）", Cost: 250, Type: "vegetable" },
+    { name: "Komatsuna (200g)", chname: "小松菜（200克）", Cost: 350, Type: "vegetable" },
+    { name: "Crystal Lettuce (120g)", chname: "水晶生菜（120克）", Cost: 200, Type: "vegetable" },
+    { name: "Mesclun Salad (150g)", chname: "混合沙拉（150克）", Cost: 350, Type: "salad" },
+    { name: "Nai Bai (220g)", chname: "奶白菜（220克）", Cost: 300, Type: "vegetable" },
+    { name: "Red Lettuce (120g)", chname: "红生菜（120克）", Cost: 300, Type: "vegetable" },
+    { name: "Red Radish (150g)", chname: "红萝卜（150克）", Cost: 300, Type: "vegetable" },
+    { name: "Arugula (60g)", chname: "芝麻菜（60克）", Cost: 300, Type: "vegetable" },
+    { name: "Romaine Lettuce (120g)", chname: "罗马生菜（120克）", Cost: 300, Type: "vegetable" },
+    { name: "Xiao Bai Cai (220g)", chname: "小白菜（220克）", Cost: 300, Type: "vegetable" },
     //meats from here on
-    {name: "Frozen Pork Loin (1kg)", chname: "冷冻猪里脊", Cost: 800, Type: "pork"},
-    {name: "Frozen Pork Ribs (1kg)", chname: "冷冻猪肋骨", Cost: 1250, Type: "pork"},
-    {name: "Frozen Pork Belly (1kg)", chname: "冷冻猪肉肚", Cost: 1050, Type: "pork"},
-    {name: "Frozen Minced Pork (500g)", chname: "冷冻猪肉末", Cost: 540, Type: "pork"},
+    {name: "Frozen Pork Loin (1kg)", chname: "冷冻猪里脊（1公斤）", Cost: 800, Type: "pork"},
+    {name: "Frozen Pork Ribs (1kg)", chname: "冷冻猪肋骨（1公斤）", Cost: 1250, Type: "pork"},
+    {name: "Frozen Pork Belly (1kg)", chname: "冷冻猪肉肚（1公斤）", Cost: 1050, Type: "pork"},
+    {name: "Frozen Minced Pork (500g)", chname: "冷冻猪肉末（500克）", Cost: 540, Type: "pork"},
     ];
     
     const shopDiv = document.getElementById('shop');
@@ -135,7 +135,7 @@
         // Remove Button
         const actionCell = document.createElement('td');
         const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
+        removeButton.innerHTML = '消除 <img src="../remove.svg" style="height:1rem;">';
         removeButton.classList.add('remove-button');
         removeButton.dataset.index = index;
         actionCell.appendChild(removeButton);

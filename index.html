@@ -139,7 +139,7 @@
         // Remove Button
         const actionCell = document.createElement('td');
         const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
+        removeButton.innerHTML = 'Remove <img src="remove.svg" style="height:1rem;">';
         removeButton.classList.add('remove-button');
         removeButton.dataset.index = index;
         actionCell.appendChild(removeButton);
