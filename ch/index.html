@@ -40,7 +40,7 @@
       </tbody>
     </table>
     <strong><span style="color:#BBBBBB">总计：$</span><span id="cart-total">0.00</span></strong><br><br>
-    <button id="checkout-button">Checkout</button>
+    <button id="checkout-button">结算</button>
   </div>
   
   <script>
@@ -106,7 +106,7 @@
         
         // Product Name
         const nameCell = document.createElement('td'); // makes new cell in the row
-        nameCell.textContent = item.name; // set cell to item name
+        nameCell.textContent = item.chname; // set cell to item name
         row.appendChild(nameCell);
         
         // Price
@@ -203,7 +203,7 @@
       `;
       
       productDiv.querySelector('button').addEventListener('click', () => {
-        const existingItem = cartItems.find(item => item.name === product.name);
+        const existingItem = cartItems.find(item => item.chname === product.chname);
         if (existingItem) {
           existingItem.quantity += 1;
         } else {
@@ -244,7 +244,7 @@
       // Save the current cart to localStorage
       localStorage.setItem('cart', JSON.stringify(cartItems));
       // Redirect to the checkout page
-      window.location.href = '../Checkout/index.html';
+      window.location.href = 'Checkout/index.html';
     });
     
   </script>
