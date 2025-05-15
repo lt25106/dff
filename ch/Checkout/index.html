@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../../style.css">
   <style>
     table {
       width: 100%;
@@ -26,6 +26,13 @@
       margin: 0;
       padding: 0;
     }
+    #logo {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      height: 3rem;
+      box-shadow: 0 0 0.5rem;
+    }
     #freegift {
       display: none;
       text-align: center;
@@ -43,18 +50,18 @@
   </style>
 </head>
 <body>
-  <a href="../index.html">
-    <img src="../dff.png" id="logo">
+  <a href="../../index.html">
+    <img src="../../dff.png" id="logo">
   </a> 
   <div id="cart">
-    <h1>Checkout <img src="../c.svg" style="height: 2rem;"></h1>
+    <h1>订单 <img src="../../c.svg" style="height: 2rem;"></h1>
     <table id="checkout-table">
       <thead>
         <tr>
-          <th>Product</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Subtotal</th>
+          <th>产品</th>
+          <th>价格</th>
+          <th>数量</th>
+          <th>小计</th>
           <th></th> <!-- Add this line -->
         </tr>
       </thead>
@@ -63,34 +70,34 @@
       </tbody>
       <tfoot>
         <tr style="background-color: white;">
-          <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+          <td colspan="3" style="text-align: right;"><strong>总计:</strong></td>
           <td id="checkout-total">$0.00</td>
         </tr>
       </tfoot>
     </table>
     <h1 id="fromgiftdiv">
-      Spend only 
-      <span id="fromgift"></span> 
-      more to redeem a free gift! <img src="gift.svg" style="height: 2rem;">
+      花费
+      <span id="fromgift"></span>
+      可以兑换一个免费礼物！<img src="../../Checkout/gift.svg" style="height: 2rem;">
     </h1>
     <span id="freegift">
-      <h1>Here's a free gift for spending $100! <img src="gift.svg" style="height: 2rem;"></h1>
+      <h1>免费礼物 <img src="../../Checkout/gift.svg" style="height: 2rem;"></h1>
       <div id="shop">
         <div class="product">
-          <img src="../Product_images/Baby Spinach (120g).png" style="height: 9rem;">
-          <h2>Baby Spinach (120g)</h2>
+          <img src="../../Product_images/Baby Spinach (120g).png" style="height: 9rem;">
+          <h2>菠菜</h2>
           <span style="font-size: 1.25rem">
             <span style="font-weight:1;color:#BBBBBB">$<s>5.00</span></s> 0.00
           </span>
-          <br><button onclick="addtocart('Baby Spinach (120g)', 'vegetable')">Add to Cart <img src="../white c.svg" style="height:1rem;"></button>
+          <br><button onclick="addtocart('Baby Spinach (120g)', 'vegetable')">加入购物车 <img src="../../white c.svg" style="height:1rem;"></button>
         </div>
         <div class="product">
-          <img src="../Product_images/Frozen Minced Pork (500g).png" style="height: 9rem;">
-          <h2>Frozen Minced Pork (500g)</h2>
+          <img src="../../Product_images/Frozen Minced Pork (500g).png" style="height: 9rem;">
+          <h2>冷冻猪肉末</h2>
           <span style="font-size: 1.25rem">
             <span style="font-weight:1;color:#BBBBBB">$<s>5.40</span></s> 0.00
           </span>
-          <br><button onclick="addtocart('Frozen Minced Pork (500g)', 'pork')">Add to Cart <img src="../white c.svg" style="height:1rem;"></button>
+          <br><button onclick="addtocart('Frozen Minced Pork (500g)', 'pork')">加入购物车 <img src="../../white c.svg" style="height:1rem;"></button>
         </div>
       </div>
     </span>
@@ -127,7 +134,7 @@
         row.className = item.Type;
 
         const nameCell = document.createElement('td');
-        nameCell.textContent = item.chname;
+        nameCell.textContent = item.name;
         row.appendChild(nameCell);
 
         const priceCell = document.createElement('td');
@@ -209,13 +216,12 @@
     }
     function addtocart(name, type) {
       let localCart = JSON.parse(localStorage.getItem('cart')) || [];
-      const existingItem = localCart.find(item => item.chname == chname && item.Cost == 0); // Check for Cost 0
+      const existingItem = localCart.find(item => item.name == name && item.Cost == 0); // Check for Cost 0
       if (existingItem) {
         existingItem.quantity = 1;
       } else {
         localCart.push({
           name: name,
-          chname: name,
           Cost: 0,
           Type: type,
           quantity: 1
