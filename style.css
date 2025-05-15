@@ -122,6 +122,7 @@ select {
   border-radius: 1rem;
   height: 3rem;
   box-shadow: 0 0 0.5rem;
+}
 .blur-bg > *:not(#langchoose) {
   filter: blur(0.5rem);
 }
