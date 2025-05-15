@@ -47,7 +47,7 @@
     <button id="checkout-button">Checkout</button>
   </div>
   
-  <script>
+  <script type="module">
     const products = [
     { name: "Baby Spinach (120g)", Cost: 500, Type: "vegetable" },
     { name: "Bayam Red Spinach (250g)", Cost: 250, Type: "vegetable" },
@@ -244,17 +244,40 @@
     });
     searchbar.addEventListener("keyup",search)
     
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
+      authDomain: "dffenterprise-3f446.firebaseapp.com",
+      projectId: "dffenterprise-3f446",
+      storageBucket: "dffenterprise-3f446.firebasestorage.app",
+      messagingSenderId: "98928528109",
+      appId: "1:98928528109:web:01bcd20d47abd534219ae4"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
     document.getElementById('checkout-button').addEventListener('click', () => {
-      // Save the current cart to localStorage
-      localStorage.setItem('cart', JSON.stringify(cartItems));
-      // Redirect to the checkout page
-      window.location.href = 'Checkout/index.html';
-    });
-    
+      onAuthStateChanged(auth, (user) => {
+        if (user && user.emailVerified) {
+          // User is logged in and email is verified
+          localStorage.setItem('cart', JSON.stringify(cartItems)); // Save the current cart to localStorage
+          window.location.href = 'Checkout/index.html'; // Redirect to the checkout page
+        } else {
+          // User is not logged in or email is not verified
+          alert('Please log in and verify your email before proceeding to checkout.');
+          window.location.href = 'login/index.html'; // Redirect to the login page
+        }
+      });
     function elbutton() {
       document.getElementById('langchoose').style.display = 'none';
       document.querySelector('body').classList.remove('blur-bg');
     }
+    });
   </script>
 </body>
 </html>
