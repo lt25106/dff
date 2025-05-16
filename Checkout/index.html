@@ -96,11 +96,44 @@
     </span>
   </div>
   
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    import { getFirestore, setDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
+      authDomain: "dffenterprise-3f446.firebaseapp.com",
+      projectId: "dffenterprise-3f446",
+      storageBucket: "dffenterprise-3f446.firebasestorage.app",
+      messagingSenderId: "98928528109",
+      appId: "1:98928528109:web:01bcd20d47abd534219ae4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
     let cartItems = [];
     let tableBody;
     let totalCell;
     let total = 0;
+
+    async function saveCartToFirestore(cartItems) {
+      const user = auth.currentUser;
+      if (!user) return;
+      await setDoc(doc(db, "carts", user.uid), { cart: cartItems });
+    }
+
+    async function loadCartFromFirestore() {
+      const user = auth.currentUser;
+      if (!user) return [];
+      const docSnap = await getDoc(doc(db, "carts", user.uid));
+      if (docSnap.exists()) {
+        return docSnap.data().cart || [];
+      }
+      return [];
+    }
 
     function updateTotalAndSubtotals() {
       total = 0;
@@ -117,7 +150,7 @@
           for (let i = cartItems.length - 1; i >= 0; i--) {
             if (cartItems[i].Cost === 0) cartItems.splice(i, 1);
           }
-          localStorage.setItem('cart', JSON.stringify(cartItems));
+          saveCartToFirestore(cartItems);
           // Don't call updateTotalAndSubtotals() recursively!
         }
       }
@@ -167,27 +200,27 @@
       });
 
       document.querySelectorAll('.quantity-input').forEach(input => {
-        input.addEventListener('change', (e) => {
+        input.addEventListener('change', async (e) => {
           const index = e.target.dataset.index;
           const newQuantity = parseInt(e.target.value, 10);
           if (newQuantity > 0) {
             cartItems[index].quantity = newQuantity;
-            localStorage.setItem('cart', JSON.stringify(cartItems));
+            await saveCartToFirestore(cartItems);
             updateTotalAndSubtotals();
           }
         });
       });
 
       document.querySelectorAll('.remove-button').forEach(button => {
-        button.addEventListener('click', (e) => {
+        button.addEventListener('click', async (e) => {
           cartItems.splice(e.target.dataset.index, 1);
-          localStorage.setItem('cart', JSON.stringify(cartItems));
+          await saveCartToFirestore(cartItems);
           updateTotalAndSubtotals();
         });
       });
 
       totalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(total / 100).toFixed(2)}`;
-      localStorage.setItem('cart', JSON.stringify(cartItems));
+      saveCartToFirestore(cartItems);
 
       // Show or hide the free gift based on the total
       const hasFreeGift = cartItems.some(item => item.Cost == 0);
@@ -207,32 +240,46 @@
         fromGiftDiv.style.display = 'none';
       }
     }
-    function addtocart(name, type) {
-      let localCart = JSON.parse(localStorage.getItem('cart')) || [];
-      const existingItem = localCart.find(item => item.chname == chname && item.Cost == 0); // Check for Cost 0
+
+    async function addtocart(name, type) {
+      // You should have a products array with chname for this to work perfectly
+      // For now, fallback to name if chname is not available
+      const user = auth.currentUser;
+      if (!user) return;
+      let localCart = await loadCartFromFirestore();
+      // Try to get chname from products array if available
+      let chname = name;
+      if (window.products) {
+        const prod = window.products.find(p => p.name === name && p.Type === type);
+        if (prod && prod.chname) chname = prod.chname;
+      }
+      const existingItem = localCart.find(item => item.chname == chname && item.Cost == 0);
       if (existingItem) {
         existingItem.quantity = 1;
       } else {
         localCart.push({
           name: name,
-          chname: name,
+          chname: chname,
           Cost: 0,
           Type: type,
           quantity: 1
         });
       }
-      localStorage.setItem('cart', JSON.stringify(localCart));
-      cartItems = localCart; // Update global variable
+      await saveCartToFirestore(localCart);
+      cartItems = localCart;
       updateTotalAndSubtotals();
       document.getElementById('freegift').style.display = 'none';
       document.getElementById('fromgiftdiv').style.display = 'none';
     }
-    
+
     document.addEventListener('DOMContentLoaded', () => {
-      cartItems = JSON.parse(localStorage.getItem('cart')) || [];
       tableBody = document.querySelector('#checkout-table tbody');
       totalCell = document.getElementById('checkout-total');
-      updateTotalAndSubtotals();
+        if (user) {
+          cartItems = await loadCartFromFirestore();
+          updateTotalAndSubtotals();
+        }
+      });
     });
   </script>
 </body>
