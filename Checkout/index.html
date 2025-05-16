@@ -160,7 +160,7 @@
         row.className = item.Type;
 
         const nameCell = document.createElement('td');
-        nameCell.textContent = item.chname;
+        nameCell.textContent = item.name;
         row.appendChild(nameCell);
 
         const priceCell = document.createElement('td');
@@ -190,7 +190,7 @@
 
         const actionCell = document.createElement('td');
         const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
+        removeButton.innerHTML = 'Remove <img src="../remove.svg" style="height:1rem;">';
         removeButton.classList.add('remove-button');
         removeButton.dataset.index = index;
         actionCell.appendChild(removeButton);
@@ -242,24 +242,22 @@
     }
 
     async function addtocart(name, type) {
-      // You should have a products array with chname for this to work perfectly
-      // For now, fallback to name if chname is not available
+      // You should have a products array with name for this to work perfectly
+      // For now, fallback to name if name is not available
       const user = auth.currentUser;
       if (!user) return;
       let localCart = await loadCartFromFirestore();
-      // Try to get chname from products array if available
-      let chname = name;
+      // Try to get name from products array if available
       if (window.products) {
         const prod = window.products.find(p => p.name === name && p.Type === type);
-        if (prod && prod.chname) chname = prod.chname;
+        if (prod && prod.name) name = prod.name;
       }
-      const existingItem = localCart.find(item => item.chname == chname && item.Cost == 0);
+      const existingItem = localCart.find(item => item.name == name && item.Cost == 0);
       if (existingItem) {
         existingItem.quantity = 1;
       } else {
         localCart.push({
           name: name,
-          chname: chname,
           Cost: 0,
           Type: type,
           quantity: 1
