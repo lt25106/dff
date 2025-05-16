@@ -131,25 +131,27 @@
           cartItems.length = 0;
           cartItems.push(...await loadCartFromFirestore());
           updateCartDisplay();
+          await saveCartToFirestore(cartItems);
         }
       });
       updateCartDisplay(); 
+      saveCartToFirestore(cartItems);
     }
   );
   
   async function updateCartDisplay() { // run when a button is pressed
-    
+
     document.getElementById("icon").src = cartItems.length > 0 
     ? "notifyc.svg" 
     : "c.svg";
-    
+
     cartItemsList.style.display = "table" // shows the table
     const cartItemsBody = document.querySelector('#cart-items tbody');
     cartItemsBody.innerHTML = ''; // initializes the table
     let total = 0;
     // localStorage.setItem('cart', JSON.stringify(cartItems)); //saves cart to localStorage
-    await saveCartToFirestore(cartItems); // saves cart to Firestore
-    
+    // await saveCartToFirestore(cartItems); // <-- REMOVE this line
+
     cartItems.forEach((item, index) => {
       const row = document.createElement('tr'); // makes a new row
       
@@ -204,30 +206,32 @@
         quantityInput.disabled = true;
       }
     });
-    
+
     cartTotal.textContent = (total / 100).toFixed(2);
-    
+
     // Event Listeners for Quantity Inputs
     document.querySelectorAll('.quantity-input').forEach(input => {
-      input.addEventListener('change', (e) => {
+      input.addEventListener('change', async (e) => {
         const index = e.target.dataset.index;
         const newQuantity = parseInt(e.target.value);
         if (newQuantity > 0) {
           cartItems[index].quantity = newQuantity;
-          updateCartDisplay();
+          updateCartDisplay(); // Update DOM immediately
+          await saveCartToFirestore(cartItems); // Save in background, now awaited
         }
       });
     });
-    
+
     // Event Listeners for Remove Buttons
     document.querySelectorAll('.remove-button').forEach(button => {
-      button.addEventListener('click', (e) => {
+      button.addEventListener('click', async (e) => {
         const index = e.target.dataset.index;
         cartItems.splice(index, 1);
         updateCartDisplay();
+        await saveCartToFirestore(cartItems);
       });
     });
-    
+
     if (cartTotal.textContent <= 0) {
       document.getElementById("checkout-button").style.display = "none"; // hides checkout button if cart is empty
     } else {
@@ -251,7 +255,7 @@
       <button>Add to Cart <img src="white c.svg" style="height:1rem;"></button>
       `;
     
-    productDiv.querySelector('button').addEventListener('click', () => {
+    productDiv.querySelector('button').addEventListener('click', async () => {
       const existingItem = cartItems.find(item => item.name === product.name);
       if (existingItem) {
         existingItem.quantity += 1;
@@ -259,6 +263,7 @@
         cartItems.push({ ...product, quantity: 1 });
       }
       updateCartDisplay();
+      await saveCartToFirestore(cartItems);
     });
     shopDiv.appendChild(productDiv);
   });
