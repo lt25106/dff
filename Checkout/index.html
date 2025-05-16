@@ -275,6 +275,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       tableBody = document.querySelector('#checkout-table tbody');
       totalCell = document.getElementById('checkout-total');
+      onAuthStateChanged(auth, async (user) => {
         if (user) {
           cartItems = await loadCartFromFirestore();
           updateTotalAndSubtotals();
