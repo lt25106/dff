@@ -30,33 +30,74 @@
     <div style="flex: 1 1">
       $3.50<br>
       <h1 style="margin: 0;">Ice Plant (80g)</h1>
-      Baby spinach is a tender, nutrient-rich leafy green known for its mild flavor and smooth texture. It's perfect for salads, smoothies, and light cooking, offering a good source of vitamins A, C, and K, as well as iron and fiber.<br>
+      Ice plant is a unique succulent vegetable known for its fleshy, succulent leaves that have a slightly crunchy texture and a mildly salty flavor. Often used in salads and as a garnish, it is rich in vitamins and minerals, making it a nutritious and visually appealing addition to dishes.<br>
       <br>Place of Origin: <b>Singapore</b><br><br>
       <button onclick="addtocart()">Add to Cart <img src="../white c.svg" style="height:1rem; display: inline;"></button>
     </div>
   </div>
-  <script>
-    const bigimage = document.getElementById("bigimage");
-    const cartItems = [];
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+    import { getFirestore, setDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
 
-    function addtocart() {
-      const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-      const existingItem = existingCart.find(item => item.name === "Ice Plant (80g)");
-      
+    // Your Firebase configuration (reuse from main site)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
+      authDomain: "dffenterprise-3f446.firebaseapp.com",
+      projectId: "dffenterprise-3f446",
+      storageBucket: "dffenterprise-3f446.firebasestorage.app",
+      messagingSenderId: "98928528109",
+      appId: "1:98928528109:web:01bcd20d47abd534219ae4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Save cart to Firestore
+    async function saveCartToFirestore(cartItems) {
+      const user = auth.currentUser;
+      if (!user) return;
+      await setDoc(doc(db, "carts", user.uid), { cart: cartItems });
+    }
+
+    // Load cart from Firestore
+    async function loadCartFromFirestore() {
+      const user = auth.currentUser;
+      if (!user) return [];
+      const docSnap = await getDoc(doc(db, "carts", user.uid));
+      if (docSnap.exists()) {
+        return docSnap.data().cart || [];
+      }
+      return [];
+    }
+
+    // Add to cart function using Firestore
+    async function addtocart() {
+      const user = auth.currentUser;
+      if (!user) {
+        alert('Please log in or sign up before adding items to your cart.');
+        window.location.href = '../login/index.html';
+        return;
+      }
+      let cart = await loadCartFromFirestore();
+      const existingItem = cart.find(item => item.name === "Ice Plant (80g)");
       if (existingItem) {
         existingItem.quantity++;
       } else {
-        existingCart.push({ 
-          name: "Ice Plant (80g)", 
-          Cost: 350, // Fixed property name
-          Type: "vegetable", // Added type
-          quantity: 1 
+        cart.push({
+          name: "Ice Plant (80g)",
+          Cost: 350,
+          Type: "vegetable",
+          quantity: 1
         });
       }
-      
-      localStorage.setItem('cart', JSON.stringify(existingCart));
+      await saveCartToFirestore(cart);
       document.getElementById("icon").src = "../notifyc.svg";
     }
+
+    // Expose addtocart globally for button onclick
+    window.addtocart = addtocart;
   </script>
 </body>
 </html>

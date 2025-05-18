@@ -36,28 +36,69 @@
       <button onclick="addtocart()">Add to Cart <img src="../white c.svg" style="height:1rem; display: inline;"></button>
     </div>
   </div>
-  <script>
-    const bigimage = document.getElementById("bigimage");
-    const cartItems = [];
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+    import { getFirestore, setDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
 
-    function addtocart() {
-      const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-      const existingItem = existingCart.find(item => item.name === "Baby Spinach (120g)");
-      
+    // Your Firebase configuration (reuse from main site)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
+      authDomain: "dffenterprise-3f446.firebaseapp.com",
+      projectId: "dffenterprise-3f446",
+      storageBucket: "dffenterprise-3f446.firebasestorage.app",
+      messagingSenderId: "98928528109",
+      appId: "1:98928528109:web:01bcd20d47abd534219ae4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Save cart to Firestore
+    async function saveCartToFirestore(cartItems) {
+      const user = auth.currentUser;
+      if (!user) return;
+      await setDoc(doc(db, "carts", user.uid), { cart: cartItems });
+    }
+
+    // Load cart from Firestore
+    async function loadCartFromFirestore() {
+      const user = auth.currentUser;
+      if (!user) return [];
+      const docSnap = await getDoc(doc(db, "carts", user.uid));
+      if (docSnap.exists()) {
+        return docSnap.data().cart || [];
+      }
+      return [];
+    }
+
+    // Add to cart function using Firestore
+    async function addtocart() {
+      const user = auth.currentUser;
+      if (!user) {
+        alert('Please log in or sign up before adding items to your cart.');
+        window.location.href = '../login/index.html';
+        return;
+      }
+      let cart = await loadCartFromFirestore();
+      const existingItem = cart.find(item => item.name === "Baby Spinach (120g)");
       if (existingItem) {
         existingItem.quantity++;
       } else {
-        existingCart.push({ 
-          name: "Baby Spinach (120g)", 
-          Cost: 500, // Fixed property name
-          Type: "vegetable", // Added type
-          quantity: 1 
+        cart.push({
+          name: "Baby Spinach (120g)",
+          Cost: 500,
+          Type: "vegetable",
+          quantity: 1
         });
       }
-      
-      localStorage.setItem('cart', JSON.stringify(existingCart));
+      await saveCartToFirestore(cart);
       document.getElementById("icon").src = "../notifyc.svg";
     }
+
+    // Expose addtocart globally for button onclick
+    window.addtocart = addtocart;
   </script>
 </body>
 </html>

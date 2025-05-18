@@ -5,7 +5,7 @@ html {
 }
 body {
   min-height: 100%;
-  background-image: linear-gradient(to top left, #169f8d, #199EE1);
+  background-image: linear-gradient(to top left, #17AB97, #199EE1);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   margin: 0;
@@ -138,4 +138,18 @@ select {
   border-radius: 1.25rem;
   box-shadow: 0 0 0.5rem;
   text-align: right;
+}
+footer {
+  background-color: white;
+  box-shadow: 0 0 0.5rem;
+  border-radius: 1rem;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+.hover:hover {
+  color: #199EE1;
+  transition: all 0.5s ease;
 }
