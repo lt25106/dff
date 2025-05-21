@@ -53,11 +53,18 @@
   </style>
 </head>
 <body>
-  <a href="../index.html">
-    <img src="../dff.png" id="logo">
-  </a> 
+  <div style="display: flex; justify-content: space-between;">
+    <a href="../index.html">
+      <img src="../dff.png" id="logo">
+    </a>
+    <div style="display: flex; justify-content: space-around; width: calc(100% - 7rem); align-items: center; border-radius: 1rem; box-shadow: 0 0 0.5rem; background-image: linear-gradient(to right, #096743,#096743,white,white,white);">
+      <div style="color: white;">Confirm Checkout</div>
+      <div>Delivery Date</div>
+      <div>Contact Number</div>
+    </div> 
+  </div>
   <div id="cart">
-    <h1>Checkout <img src="../c.svg" style="height: 2rem;"></h1>
+    <h1>Cart <img src="../c.svg" style="height: 2rem;"></h1>
     <table id="checkout-table">
       <thead>
         <tr>
@@ -104,6 +111,7 @@
         </div>
       </div>
     </span>
+    <button class="scaleonhover" onclick="window.location.href = 'date/index.html'">Confirm Checkout <img src="confirm.svg" style="height: 1rem;"></button>
   </div>
   <br>
   <footer>
@@ -123,7 +131,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
     import { getFirestore, setDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-
+    
     const firebaseConfig = {
       apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
       authDomain: "dffenterprise-3f446.firebaseapp.com",
@@ -132,22 +140,22 @@
       messagingSenderId: "98928528109",
       appId: "1:98928528109:web:01bcd20d47abd534219ae4"
     };
-
+    
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-
+    
     let cartItems = [];
     let tableBody;
     let totalCell;
     let total = 0;
-
+    
     async function saveCartToFirestore(cartItems) {
       const user = auth.currentUser;
       if (!user) return;
       await setDoc(doc(db, "carts", user.uid), { cart: cartItems });
     }
-
+    
     async function loadCartFromFirestore() {
       const user = auth.currentUser;
       if (!user) return [];
@@ -157,17 +165,17 @@
       }
       return [];
     }
-
+    
     function updateTotalAndSubtotals() {
       total = 0;
       tableBody.innerHTML = '';
-
+      
       // Remove free gifts if total is below threshold
       let needsGiftRemoval = false;
       if (cartItems.some(item => item.Cost === 0)) {
         const tempTotal = cartItems
-          .filter(item => item.Cost !== 0)
-          .reduce((sum, item) => sum + item.Cost * item.quantity, 0);
+        .filter(item => item.Cost !== 0)
+        .reduce((sum, item) => sum + item.Cost * item.quantity, 0);
         if (tempTotal < 10000) {
           // Remove free gifts
           for (let i = cartItems.length - 1; i >= 0; i--) {
@@ -177,19 +185,19 @@
           // Don't call updateTotalAndSubtotals() recursively!
         }
       }
-
+      
       cartItems.forEach((item, index) => {
         const row = document.createElement('tr');
         row.className = item.Type;
-
+        
         const nameCell = document.createElement('td');
         nameCell.textContent = item.name;
         row.appendChild(nameCell);
-
+        
         const priceCell = document.createElement('td');
         priceCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(item.Cost / 100).toFixed(2)}`;
         row.appendChild(priceCell);
-
+        
         const quantityCell = document.createElement('td');
         const quantityInput = document.createElement('input');
         quantityInput.type = 'number';
@@ -197,20 +205,20 @@
         quantityInput.value = item.quantity;
         quantityInput.classList.add('quantity-input');
         quantityInput.dataset.index = index;
-
+        
         if (item.Cost == 0) {
           quantityInput.disabled = true;
         }
-
+        
         quantityCell.appendChild(quantityInput);
         row.appendChild(quantityCell);
-
+        
         const subtotal = item.Cost * item.quantity;
         total += subtotal;
         const subtotalCell = document.createElement('td');
         subtotalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(subtotal / 100).toFixed(2)}`;
         row.appendChild(subtotalCell);
-
+        
         const actionCell = document.createElement('td');
         const removeButton = document.createElement('button');
         removeButton.innerHTML = 'Remove <img src="../remove.svg" style="height:1rem;">';
@@ -218,10 +226,10 @@
         removeButton.dataset.index = index;
         actionCell.appendChild(removeButton);
         row.appendChild(actionCell);
-
+        
         tableBody.appendChild(row);
       });
-
+      
       document.querySelectorAll('.quantity-input').forEach(input => {
         input.addEventListener('change', async (e) => {
           const index = e.target.dataset.index;
@@ -233,7 +241,7 @@
           }
         });
       });
-
+      
       document.querySelectorAll('.remove-button').forEach(button => {
         button.addEventListener('click', async (e) => {
           cartItems.splice(e.target.dataset.index, 1);
@@ -241,16 +249,16 @@
           updateTotalAndSubtotals();
         });
       });
-
+      
       totalCell.innerHTML = `<span style="font-weight:1;color:#BBBBBB">$</span>${(total / 100).toFixed(2)}`;
       saveCartToFirestore(cartItems);
-
+      
       // Show or hide the free gift based on the total
       const hasFreeGift = cartItems.some(item => item.Cost == 0);
       const freeGiftDiv = document.getElementById('freegift');
       const fromGiftDiv = document.getElementById('fromgiftdiv');
       const fromgift = document.getElementById('fromgift');
-
+      
       if (total >= 8000 && total < 10000) {
         fromGiftDiv.style.display = 'block';
         freeGiftDiv.style.display = 'none';
@@ -263,7 +271,7 @@
         fromGiftDiv.style.display = 'none';
       }
     }
-
+    
     async function addtocart(name, type) {
       // You should have a products array with name for this to work perfectly
       // For now, fallback to name if name is not available
@@ -292,7 +300,7 @@
       document.getElementById('freegift').style.display = 'none';
       document.getElementById('fromgiftdiv').style.display = 'none';
     }
-
+    
     document.addEventListener('DOMContentLoaded', () => {
       tableBody = document.querySelector('#checkout-table tbody');
       totalCell = document.getElementById('checkout-total');
@@ -303,7 +311,7 @@
         }
       });
     });
-
+    
     window.addtocart = addtocart;
   </script>
 </body>
