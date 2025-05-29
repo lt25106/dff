@@ -16,5 +16,21 @@
       <div>Contact Number</div>
     </div> 
   </div>
+  <h1>Choose Delivery Date:</h1>
+  <input type="date" style="position: absolute; top:50%;left:50%;transform: translate(-50%, -50%); font-size: 3rem; border-radius: 2rem;" min="2025-05-29">
+  <script>
+    dateselect = document.querySelector("input");
+    
+    const today = new Date();
+    today.setDate(today.getDate() + 2);
+    dateselect.min = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    
+    input.addEventListener('change', function() {
+      if (this.value && this.value < this.min) {
+        alert('Please select a date on or after ' + this.min);
+        this.value = '';
+      }
+    });
+  </script>
 </body>
 </html>
