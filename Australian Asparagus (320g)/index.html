@@ -24,7 +24,7 @@
       <img src="../Product_images/Australian Asparagus (320g).png" style="width: 50vh;" id="bigimage">
     </div>
     <div style="flex: 1 1">
-      $3.00<br>
+      $6.00<br>
       <h1 style="margin: 0;">Australian Asparagus (320g)</h1>
       Australia asparagus is a tender, flavorful vegetable with firm green spears and a slightly earthy, sweet taste. High in fiber, vitamins A, C, and folate, it’s ideal for grilling, steaming, or adding to salads and pasta dishes.<br>
       <br>Place of Origin: <b>Australia</b><br><br>
@@ -91,13 +91,13 @@
         return;
       }
       let cart = await loadCartFromFirestore();
-      const existingItem = cart.find(item => item.name === "Arugula (60g)");
+      const existingItem = cart.find(item => item.name === "Australian Asparagus (320g)");
       if (existingItem) {
         existingItem.quantity++;
       } else {
         cart.push({
-          name: "Arugula (60g)",
-          Cost: 300,
+          name: "Australian Asparagus (320g)",
+          Cost: 600,
           Type: "vegetable",
           quantity: 1
         });

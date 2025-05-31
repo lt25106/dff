@@ -91,12 +91,12 @@
         return;
       }
       let cart = await loadCartFromFirestore();
-      const existingItem = cart.find(item => item.name === "Arugula (60g)");
+      const existingItem = cart.find(item => item.name === "Australian Pumpkin (500g)");
       if (existingItem) {
         existingItem.quantity++;
       } else {
         cart.push({
-          name: "Arugula (60g)",
+          name: "Australian Pumpkin (500g)",
           Cost: 300,
           Type: "vegetable",
           quantity: 1
