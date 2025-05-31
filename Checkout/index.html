@@ -57,10 +57,11 @@
     <a href="../index.html">
       <img src="../dff.png" id="logo">
     </a>
-    <div style="display: flex; justify-content: space-around; width: calc(100% - 7rem); align-items: center; border-radius: 1rem; box-shadow: 0 0 0.5rem; background-image: linear-gradient(to right, #096743,#096743,white,white,white);">
+    <div style="display: flex; justify-content: space-around; width: calc(100% - 7rem); align-items: center; border-radius: 1rem; box-shadow: 0 0 0.5rem; background-image: url(header.svg); background-size: cover;">
       <div style="color: white;">Confirm Checkout</div>
       <div>Delivery Date</div>
       <div>Contact Number</div>
+      <div>Payment</div>
     </div> 
   </div>
   <div id="cart">
@@ -128,10 +129,10 @@
     </span>
   </footer>
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-    import { getFirestore, setDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-    
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    import { getFirestore, setDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
       authDomain: "dffenterprise-3f446.firebaseapp.com",

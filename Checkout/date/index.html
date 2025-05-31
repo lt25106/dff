@@ -4,33 +4,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Date</title>
   <link rel="stylesheet" href="../../style.css">
+  <style>
+    html, body {
+      overflow: hidden;
+    }
+    footer {
+      position: absolute;
+      bottom: 1rem;
+      width: 97%;
+    }
+  </style>
 </head>
 <body>
   <div style="display: flex; justify-content: space-between;">
     <a href="../../index.html">
       <img src="../../dff.png" id="logo">
     </a>
-    <div style="display: flex; justify-content: space-around; width: calc(100% - 7rem); align-items: center; border-radius: 1rem; box-shadow: 0 0 0.5rem; background-image: linear-gradient(to right, #096743,#096743,#096743,#096743,white,white);">
-      <div style="color: white;">Confirm Checkout</div>
+    <div style="display: flex; justify-content: space-around; width: calc(100% - 7rem); align-items: center; border-radius: 1rem; box-shadow: 0 0 0.5rem; background-image: url(header.svg); background-size: 100% 100%">
+      <div>Confirm Checkout</div>
       <div style="color: white;">Delivery Date</div>
       <div>Contact Number</div>
+      <div>Payment</div>
     </div> 
   </div>
-  <h1>Choose Delivery Date:</h1>
-  <input type="date" style="position: absolute; top:50%;left:50%;transform: translate(-50%, -50%); font-size: 3rem; border-radius: 2rem;" min="2025-05-29">
-  <script>
-    dateselect = document.querySelector("input");
-    
+  <h1>Choose delivery date on or after :</h1>
+  <div style="position: absolute; top:50%;left:50%;transform: translate(-50%, -50%); ">
+    <input type="date" style="font-size: 2.5rem; border-radius: 2rem;">&nbsp;&nbsp;
+    <button style="font-size: 2.5rem; border-radius: 2.5rem;">Confirm</button>
+  </div>
+  <footer>
+    <span>
+      <h2 style="margin-top: 0;">About Us</h2>
+      DFF Enterprise Pte. Ltd.<br>
+      <a href="https://maps.app.goo.gl/gNykxzc6xDTLVP6MA" class="hover">114 Lavender Street, #05-93, CT Hub 2, Singapore 338729</a><br>
+      <a href="mailto:dffplsg@gmail.com" class="hover">dffplsg@gmail.com</a>
+    </span>
+    <span>
+      <h2 style="margin-top: 0;">Links</h2>
+      <a href="../login/index.html" class="hover">Your Account</a><br>
+      <a href="https://www.instagram.com/dff.enterprise/" class="hover">Our Instagram <img src="../../insta.svg" style="height: 1rem;"></a>
+    </span>
+  </footer>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    import { getFirestore, setDoc, getDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
+      authDomain: "dffenterprise-3f446.firebaseapp.com",
+      projectId: "dffenterprise-3f446",
+      storageBucket: "dffenterprise-3f446.firebasestorage.app",
+      messagingSenderId: "98928528109",
+      appId: "1:98928528109:web:01bcd20d47abd534219ae4"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const dateselect = document.querySelector("input");
+    const heading = document.querySelector("h1");
+
     const today = new Date();
     today.setDate(today.getDate() + 2);
     dateselect.min = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     
-    input.addEventListener('change', function() {
-      if (this.value && this.value < this.min) {
-        alert('Please select a date on or after ' + this.min);
-        this.value = '';
+    heading.textContent = "Choose delivery date on or after " + today.toLocaleDateString() + ":";
+
+    function detectvalidate() {
+      if (dateselect.value && dateselect.value < dateselect.min) {
+        dateselect.value = '';
       }
-    });
+    }
+
+    dateselect.addEventListener('change', detectvalidate);
   </script>
 </body>
 </html>
