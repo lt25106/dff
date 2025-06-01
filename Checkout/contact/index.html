@@ -11,10 +11,7 @@
     footer {
       position: absolute;
       bottom: 1rem;
-      width: calc(100% - 2rem);
-    }
-    button:hover {
-      scale: 1.05;
+      width: 97%;
     }
   </style>
 </head>
@@ -27,19 +24,18 @@
       <a href="../index.html">
         <div>Confirm Checkout</div>
       </a>
-      <div style="color: white;">Delivery Date</div>
-      <div>Contact Number</div>
+      <a href="../date/index.html">
+        <div>Delivery Date</div>
+      </a>
+      <div style="color: white;">Contact Number</div>
       <div>Payment</div>
     </div> 
   </div>
-  <h1>Choose delivery date on or after :</h1>
+  <h1>Enter your phone number</h1>
+  This number will be contacted when your order is ready for collection.
   <div style="position: absolute; top:50%;left:50%;transform: translate(-50%, -50%);">
-    <input type="date" style="font-size: 2.5rem; border-radius: 3rem; padding: 0.5rem;">
-    <select style="font-size: 2.5rem; border-radius: 3rem; padding: 0.5rem;">
-      <option value="am">AM</option>
-      <option value="pm">PM</option>
-    </select>
-    <button style="font-size: 2.5rem; border-radius: 3rem; margin-top: 1rem;">Confirm</button>
+    <input type="tel" placeholder="Enter your phone number" style="font-size: 2.5rem; border-radius: 2.5rem; max-width: 99vw;">
+    <button style="font-size: 2.5rem; border-radius: 2.5rem; margin-top: 1rem;">Confirm</button>
   </div>
   <footer>
     <span>
@@ -77,22 +73,7 @@
     const db = getFirestore(app);
 
     const dateselect = document.querySelector("input");
-    const heading = document.querySelector("h1");
     const button = document.querySelector("button");
-
-    const today = new Date();
-    today.setDate(today.getDate() + 2);
-    dateselect.min = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    
-    heading.textContent = "Choose delivery date on or after " + today.toLocaleDateString() + ":";
-
-    function detectvalidate() {
-      if (dateselect.value && dateselect.value < dateselect.min) {
-        dateselect.value = '';
-      }
-    }
-
-    dateselect.addEventListener('change', detectvalidate);
 
     let currentUser = null;
 
@@ -107,14 +88,13 @@
         return;
       }
       if (!dateselect.value) {
-        alert("Please select a date.");
+        alert("Please input your phone number.");
         return;
       }
       await setDoc(doc(db, "checkouts", currentUser.uid), {
-        deliveryDate: dateselect.value
-        + " " + document.querySelector("select").value,
+        phonenumber: dateselect.value
       }, { merge: true });
-      alert("Delivery date saved!");
+      alert("phone number saved!");
 
       window.location.href = "../contact/index.html";
     }
