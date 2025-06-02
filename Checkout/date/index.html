@@ -72,13 +72,12 @@
     };
 
     // Initialize Firebase
-    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-    const auth = getAuth();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
 
     const dateselect = document.querySelector("input");
     const heading = document.querySelector("h1");
-    const button = document.querySelector("button");
 
     const today = new Date();
     today.setDate(today.getDate() + 2);
@@ -93,33 +92,6 @@
     }
 
     dateselect.addEventListener('change', detectvalidate);
-
-    let currentUser = null;
-
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-    });
-
-    async function confirmDate() {
-      if (!currentUser) {
-        alert("Please log in first.");
-        window.location.href = "../../login/index.html";
-        return;
-      }
-      if (!dateselect.value) {
-        alert("Please select a date.");
-        return;
-      }
-      await setDoc(doc(db, "checkouts", currentUser.uid), {
-        deliveryDate: dateselect.value
-        + " " + document.querySelector("select").value,
-      }, { merge: true });
-      alert("Delivery date saved!");
-
-      window.location.href = "../contact/index.html";
-    }
-
-    button.addEventListener("click", confirmDate);
   </script>
 </body>
 </html>
