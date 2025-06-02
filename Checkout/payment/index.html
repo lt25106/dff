@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>contact number</title>
+  <title>Payment</title>
   <link rel="stylesheet" href="../../style.css">
   <style>
     html, body {
@@ -30,16 +30,14 @@
       <a href="../date/index.html">
         <div>Delivery Date</div>
       </a>
-      <div style="color: white;">Contact Number</div>
-      <div>Payment</div>
+      <a href="../contact/index.html">
+        <div>Contact Number</div>
+      </a>
+      <div style="color: white;">Payment</div>
     </div> 
   </div>
-  <h1>Enter your phone number</h1>
-  This number will be contacted when your order is ready for collection.
-  <div style="position: absolute; top:50%;left:50%;transform: translate(-50%, -50%);">
-    <input type="tel" placeholder="Enter your phone number" style="font-size: 2.5rem; border-radius: 2.5rem; max-width: 99vw;">
-    <button style="font-size: 2.5rem; border-radius: 2.5rem; margin-top: 1rem;">Confirm</button>
-  </div>
+  <h1>Please pay .</h1>
+  <img style="position: absolute; top:50%;left:50%;transform: translate(-50%, -50%);" src="qrcode.png">
   <footer>
     <span>
       <h2 style="margin-top: 0;">About Us</h2>
@@ -54,13 +52,10 @@
     </span>
   </footer>
   <script type="module">
-    import { initializeApp, getApps} from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-    import { getFirestore, setDoc, getDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
+    import { getFirestore, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
-    // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
       authDomain: "dffenterprise-3f446.firebaseapp.com",
@@ -75,34 +70,26 @@
     const auth = getAuth();
     const db = getFirestore(app);
 
-    const dateselect = document.querySelector("input");
-    const button = document.querySelector("button");
+    const h1 = document.querySelector("h1");
 
     let currentUser = null;
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       currentUser = user;
+      if (currentUser) {
+        const totalPrice = await fetchTotalPrice(currentUser.uid);
+        h1.textContent = `Please pay $${(totalPrice / 100).toFixed(2)}.`;
+      }
     });
 
-    async function confirmDate() {
-      if (!currentUser) {
-        alert("Please log in first.");
-        window.location.href = "../../login/index.html";
-        return;
+    async function fetchTotalPrice(userId) {
+      const docSnap = await getDoc(doc(db, "carts", userId));
+      if (docSnap.exists()) {
+        const cartItems = docSnap.data().cart || [];
+        return cartItems.reduce((sum, item) => sum + item.Cost * item.quantity, 0);
       }
-      if (!dateselect.value) {
-        alert("Please input your phone number.");
-        return;
-      }
-      await setDoc(doc(db, "carts", currentUser.uid), {
-        phonenumber: dateselect.value
-      }, { merge: true });
-      alert("phone number saved!");
-
-      window.location.href = "../payment/index.html";
+      return 0;
     }
-
-    button.addEventListener("click", confirmDate);
   </script>
 </body>
 </html>

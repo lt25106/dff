@@ -78,6 +78,8 @@
 
     const dateselect = document.querySelector("input");
     const heading = document.querySelector("h1");
+    const button = document.querySelector("button");
+    const timeselect = document.querySelector("select");
 
     const today = new Date();
     today.setDate(today.getDate() + 2);
@@ -92,6 +94,26 @@
     }
 
     dateselect.addEventListener('change', detectvalidate);
+
+    async function confirmDate() {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("Please log in first.");
+        window.location.href = "../../login/index.html";
+        return;
+      }
+      if (!dateselect.value) {
+        alert("Please select a date.");
+        return;
+      }
+      await setDoc(doc(db, "carts", user.uid), {
+        deliveryDate: dateselect.value + timeselect.value
+      }, { merge: true });
+      alert("Delivery date saved!");
+      window.location.href = "../contact/index.html";
+    }
+
+    button.addEventListener('click', confirmDate);
   </script>
 </body>
 </html>
