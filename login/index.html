@@ -2,124 +2,6 @@
 <html style="height: 100%;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <head>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      sendEmailVerification,
-      signInWithEmailAndPassword,
-      signOut,
-      sendPasswordResetEmail,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
-      authDomain: "dffenterprise-3f446.firebaseapp.com",
-      projectId: "dffenterprise-3f446",
-      storageBucket: "dffenterprise-3f446.firebasestorage.app",
-      messagingSenderId: "98928528109",
-      appId: "1:98928528109:web:01bcd20d47abd534219ae4"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    window.signUp = () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const loading = document.querySelector("span");
-
-      loading.style.display = "flex";
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          sendEmailVerification(userCredential.user);
-          auth.signOut();
-          alert("Signup successful - Verification email sent");
-          loading.style.display = "none";
-        })
-        .catch((error) => {
-          alert(error.message);
-          loading.style.display = "none";
-        });
-    };
-
-    window.signIn = () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const loading = document.querySelector("span");
-
-      loading.style.display = "flex";
-
-      signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-        if (!userCredential.user.emailVerified) {
-          alert("Please verify your email first!");
-          loading.style.display = "none";
-          signOut(auth);
-          return;
-        }
-        alert("Login successful");
-        loading.style.display = "none";
-        window.location.href = "../index.html";
-      })
-      .catch((error) => {
-        alert(error.message);
-        loading.style.display = "none";
-      });
-    };
-
-    window.signOut = () => {
-      signOut(auth)
-        .then(() => {
-          alert("Signed out");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    };
-
-    window.resetPassword = () => {
-      const email = document.getElementById("email").value;
-
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          alert("Password reset email sent! Check your inbox");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    };
-
-    onAuthStateChanged(auth, (user) => {
-      const status = document.getElementById("user-status");
-      const signOutBtn = document.getElementById("signOut");
-      const signIn = document.getElementById("signIn");
-      const signUpBtn = document.getElementById("signUp");
-      const resetBtn = document.getElementById("resetBtn");
-      const email = document.getElementById("email");
-      const password = document.getElementById("password");
-
-      if (user) {
-        status.innerText = `Logged in as: ${user.email}`;
-        signOutBtn.style.display = "inline";
-        signIn.style.display = "none";
-        signUpBtn.style.display = "none";
-        resetBtn.style.display = "none";
-        email.style.display = "none";
-        password.style.display = "none"
-      } else {
-        status.innerText = "";
-        signOutBtn.style.display = "none";
-        signIn.style.display = "inline";
-        signUpBtn.style.display = "inline";
-        resetBtn.style.display = "inline";
-        email.style.display = "inline";
-        password.style.display = "inline"
-      }
-    });
-  </script>
   <link rel="stylesheet" href="../style.css">
   <style>
     html, body {
@@ -179,5 +61,35 @@
   <br><span><div></div></span>
   <p id="user-status"></p>
   <button id="resetBtn" onclick="resetPassword()">Forgot Password <img src="forgot.svg" style="height: 2rem;"></button>
+  <script type="module" src="../script.js"></script>
+  <script>
+    onAuthStateChanged(auth, (user) => {
+      const status = document.getElementById("user-status");
+      const signOutBtn = document.getElementById("signOut");
+      const signIn = document.getElementById("signIn");
+      const signUpBtn = document.getElementById("signUp");
+      const resetBtn = document.getElementById("resetBtn");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+
+      if (user) {
+        status.innerText = `Logged in as: ${user.email}`;
+        signOutBtn.style.display = "inline";
+        signIn.style.display = "none";
+        signUpBtn.style.display = "none";
+        resetBtn.style.display = "none";
+        email.style.display = "none";
+        password.style.display = "none"
+      } else {
+        status.innerText = "";
+        signOutBtn.style.display = "none";
+        signIn.style.display = "inline";
+        signUpBtn.style.display = "inline";
+        resetBtn.style.display = "inline";
+        email.style.display = "inline";
+        password.style.display = "inline"
+      }
+    });
+  </script>
 </body>
 </html>
