@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment</title>
+  <link rel="stylesheet" href="../../style.css">
+  <style>
+    html, body {
+      overflow: hidden;
+    }
+    footer {
+      position: absolute;
+      bottom: 1rem;
+      width: 97%;
+    }
+    button:hover {
+      scale: 1.05;
+    }
+  </style>
+</head>
+<body>
+  <div style="display: flex; justify-content: space-between;">
+    <a href="../../index.html">
+      <img src="../../dff.png" id="logo">
+    </a>
+    <div style="display: flex; justify-content: space-around; width: calc(100% - 7rem); align-items: center; border-radius: 1rem; box-shadow: 0 0 0.5rem; background-image: url(header.svg); background-size: 100% 100%">
+      <a href="../index.html">
+        <div>Confirm Checkout</div>
+      </a>
+      <a href="../date/index.html">
+        <div>Delivery Date</div>
+      </a>
+      <a href="../contact/index.html">
+        <div>Contact Number</div>
+      </a>
+      <div style="color: white;">Payment</div>
+    </div> 
+  </div>
+  <h1>Please pay .</h1>
+  <img style="position: absolute; top:50%;left:50%;transform: translate(-50%, -50%); height: 20rem;" src="qrcode.png">
+  <footer>
+    <span>
+      <h2 style="margin-top: 0;">About Us</h2>
+      DFF Enterprise Pte. Ltd.<br>
+      <a href="https://maps.app.goo.gl/gNykxzc6xDTLVP6MA" class="hover">114 Lavender Street, #05-93, CT Hub 2, Singapore 338729</a><br>
+      <a href="mailto:dffplsg@gmail.com" class="hover">dffplsg@gmail.com</a>
+    </span>
+    <span>
+      <h2 style="margin-top: 0;">Links</h2>
+      <a href="../login/index.html" class="hover">Your Account</a><br>
+      <a href="https://www.instagram.com/dff.enterprise/" class="hover">Our Instagram <img src="../../insta.svg" style="height: 1rem;"></a>
+    </span>
+  </footer>
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    import { getFirestore, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
+      authDomain: "dffenterprise-3f446.firebaseapp.com",
+      projectId: "dffenterprise-3f446",
+      storageBucket: "dffenterprise-3f446.firebasestorage.app",
+      messagingSenderId: "98928528109",
+      appId: "1:98928528109:web:01bcd20d47abd534219ae4"
+    };
+
+    // Initialize Firebase
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore(app);
+
+    const h1 = document.querySelector("h1");
+
+    let currentUser = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (currentUser) {
+        const totalPrice = await fetchTotalPrice(currentUser.uid);
+        h1.textContent = `Please pay $${(totalPrice / 100).toFixed(2)}.`;
+      }
+    });
+
+    async function fetchTotalPrice(userId) {
+      const docSnap = await getDoc(doc(db, "carts", userId));
+      if (docSnap.exists()) {
+        const cartItems = docSnap.data().cart || [];
+        return cartItems.reduce((sum, item) => sum + item.Cost * item.quantity, 0);
+      }
+      return 0;
+    }
+  </script>
+</body>
+</html>

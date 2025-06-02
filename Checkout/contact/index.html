@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Date</title>
+  <title>contact number</title>
   <link rel="stylesheet" href="../../style.css">
   <style>
     html, body {
@@ -11,7 +11,7 @@
     footer {
       position: absolute;
       bottom: 1rem;
-      width: calc(100% - 2rem);
+      width: 97%;
     }
     button:hover {
       scale: 1.05;
@@ -27,19 +27,18 @@
       <a href="../index.html">
         <div>Confirm Checkout</div>
       </a>
-      <div style="color: white;">Delivery Date & Time</div>
-      <div>Contact Number</div>
+      <a href="../date/index.html">
+        <div>Delivery Date</div>
+      </a>
+      <div style="color: white;">Contact Number</div>
       <div>Payment</div>
     </div> 
   </div>
-  <h1>Choose delivery date on or after :</h1>
+  <h1>Enter your phone number</h1>
+  This number will be contacted when your order is ready for collection.
   <div style="position: absolute; top:50%;left:50%;transform: translate(-50%, -50%);">
-    <input type="date" style="font-size: 2.5rem; border-radius: 3rem; padding: 0.5rem; box-shadow: 0 0 0.5rem;">&nbsp;&nbsp;&nbsp;
-    <select style="font-size: 2.5rem; border-radius: 3rem; padding: 0.5rem; box-shadow: 0 0 0.5rem;">
-      <option value="am">AM</option>
-      <option value="pm">PM</option>
-    </select>
-    <button style="font-size: 2.5rem; border-radius: 3rem; margin-top: 1rem; box-shadow: 0 0 0.5rem black;">Confirm</button>
+    <input type="tel" placeholder="Enter your phone number" style="font-size: 2.5rem; border-radius: 2.5rem; max-width: 99vw; box-shadow: 0 0 0.5rem;">
+    <button style="font-size: 2.5rem; border-radius: 2.5rem; margin-top: 1rem; box-shadow: 0 0 0.5rem black;">Confirm</button>
   </div>
   <footer>
     <span>
@@ -72,48 +71,38 @@
     };
 
     // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const auth = getAuth();
     const db = getFirestore(app);
 
     const dateselect = document.querySelector("input");
-    const heading = document.querySelector("h1");
     const button = document.querySelector("button");
-    const timeselect = document.querySelector("select");
 
-    const today = new Date();
-    today.setDate(today.getDate() + 2);
-    dateselect.min = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    
-    heading.textContent = "Choose delivery date on or after " + today.toLocaleDateString() + ":";
+    let currentUser = null;
 
-    function detectvalidate() {
-      if (dateselect.value && dateselect.value < dateselect.min) {
-        dateselect.value = '';
-      }
-    }
-
-    dateselect.addEventListener('change', detectvalidate);
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+    });
 
     async function confirmDate() {
-      const user = auth.currentUser;
-      if (!user) {
+      if (!currentUser) {
         alert("Please log in first.");
         window.location.href = "../../login/index.html";
         return;
       }
       if (!dateselect.value) {
-        alert("Please select a date.");
+        alert("Please input your phone number.");
         return;
       }
-      await setDoc(doc(db, "carts", user.uid), {
-        deliveryDate: dateselect.value + timeselect.value
+      await setDoc(doc(db, "carts", currentUser.uid), {
+        phonenumber: dateselect.value
       }, { merge: true });
-      alert("Delivery date saved!");
-      window.location.href = "../contact/index.html";
+      alert("phone number saved!");
+
+      window.location.href = "../payment/index.html";
     }
 
-    button.addEventListener('click', confirmDate);
+    button.addEventListener("click", confirmDate);
   </script>
 </body>
 </html>

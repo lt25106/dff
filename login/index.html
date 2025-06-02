@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <head>
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import {
       getAuth,
       createUserWithEmailAndPassword,
@@ -12,7 +12,7 @@
       signOut,
       sendPasswordResetEmail,
       onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
@@ -179,5 +179,35 @@
   <br><span><div></div></span>
   <p id="user-status"></p>
   <button id="resetBtn" onclick="resetPassword()">Forgot Password <img src="forgot.svg" style="height: 2rem;"></button>
+  <script type="module" src="../script.js"></script>
+  <script>
+    onAuthStateChanged(auth, (user) => {
+      const status = document.getElementById("user-status");
+      const signOutBtn = document.getElementById("signOut");
+      const signIn = document.getElementById("signIn");
+      const signUpBtn = document.getElementById("signUp");
+      const resetBtn = document.getElementById("resetBtn");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+
+      if (user) {
+        status.innerText = `Logged in as: ${user.email}`;
+        signOutBtn.style.display = "inline";
+        signIn.style.display = "none";
+        signUpBtn.style.display = "none";
+        resetBtn.style.display = "none";
+        email.style.display = "none";
+        password.style.display = "none"
+      } else {
+        status.innerText = "";
+        signOutBtn.style.display = "none";
+        signIn.style.display = "inline";
+        signUpBtn.style.display = "inline";
+        resetBtn.style.display = "inline";
+        email.style.display = "inline";
+        password.style.display = "inline"
+      }
+    });
+  </script>
 </body>
 </html>
