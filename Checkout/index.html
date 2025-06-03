@@ -50,6 +50,16 @@
     #fromgift {
       color: #54ab5a;
     }
+    #header {
+      display: flex;
+      justify-content: space-around;
+      width: calc(100% - 7rem);
+      align-items: center;
+      border-radius: 1rem;
+      box-shadow: 0 0 0.5rem;
+      background-image: url(header.svg);
+      background-size: cover;
+    }
   </style>
 </head>
 <body>
@@ -57,7 +67,7 @@
     <a href="../index.html">
       <img src="../dff.png" id="logo">
     </a>
-    <div style="display: flex; justify-content: space-around; width: calc(100% - 7rem); align-items: center; border-radius: 1rem; box-shadow: 0 0 0.5rem; background-image: url(header.svg); background-size: cover;">
+    <div id="header">
       <div style="color: white;">Confirm Checkout</div>
       <div>Delivery Date</div>
       <div>Contact Number</div>

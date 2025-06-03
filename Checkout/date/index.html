@@ -85,7 +85,7 @@
     today.setDate(today.getDate() + 2);
     dateselect.min = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     
-    heading.textContent = "Choose delivery date on or after " + today.toLocaleDateString() + ":";
+    heading.textContent = "Choose delivery date on or after " + today.toLocaleDateString("en-GB") + ":";
 
     function detectvalidate() {
       if (dateselect.value && dateselect.value < dateselect.min) {
