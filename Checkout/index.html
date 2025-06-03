@@ -161,11 +161,11 @@
     let totalCell;
     let total = 0;
     
-    async function saveCartToFirestore(cartItems) {
-      const user = auth.currentUser;
-      if (!user) return;
-      await setDoc(doc(db, "carts", user.uid), { cart: cartItems });
-    }
+    async function saveCartToFirestore(cartItems, deliveryDate, phonenumber) {
+    const user = auth.currentUser;
+    if (!user) return;
+    await setDoc(doc(db, "carts", user.uid), { cart: cartItems, deliveryDate, phonenumber }, { merge: true });
+  }
     
     async function loadCartFromFirestore() {
       const user = auth.currentUser;

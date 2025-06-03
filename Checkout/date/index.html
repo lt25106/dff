@@ -106,9 +106,20 @@
         alert("Please select a date.");
         return;
       }
-      await setDoc(doc(db, "carts", user.uid), {
-        deliveryDate: dateselect.value + timeselect.value
-      }, { merge: true });
+
+      // Fetch existing cart data
+      const docSnap = await getDoc(doc(db, "carts", user.uid));
+      let cartData = {};
+      if (docSnap.exists()) {
+        cartData = docSnap.data();
+      }
+
+      // Add or update the deliveryDate field
+      cartData.deliveryDate = dateselect.value + timeselect.value;
+
+      // Save the updated cart data
+      await setDoc(doc(db, "carts", user.uid), cartData, { merge: true });
+
       alert("Delivery date saved!");
       window.location.href = "../contact/index.html";
     }

@@ -54,13 +54,10 @@
     </span>
   </footer>
   <script type="module">
-    import { initializeApp, getApps} from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-    import { getFirestore, setDoc, getDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
+    import { getFirestore, setDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
-    // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
       authDomain: "dffenterprise-3f446.firebaseapp.com",
@@ -75,7 +72,7 @@
     const auth = getAuth();
     const db = getFirestore(app);
 
-    const dateselect = document.querySelector("input");
+    const phoneInput = document.querySelector("input");
     const button = document.querySelector("button");
 
     let currentUser = null;
@@ -84,25 +81,35 @@
       currentUser = user;
     });
 
-    async function confirmDate() {
+    async function savePhoneNumber() {
       if (!currentUser) {
         alert("Please log in first.");
         window.location.href = "../../login/index.html";
         return;
       }
-      if (!dateselect.value) {
+      if (!phoneInput.value) {
         alert("Please input your phone number.");
         return;
       }
-      await setDoc(doc(db, "carts", currentUser.uid), {
-        phonenumber: dateselect.value
-      }, { merge: true });
-      alert("phone number saved!");
 
+      // Fetch existing cart data
+      const docSnap = await getDoc(doc(db, "carts", currentUser.uid));
+      let cartData = {};
+      if (docSnap.exists()) {
+        cartData = docSnap.data();
+      }
+
+      // Add or update the phone number field
+      cartData.phonenumber = phoneInput.value;
+
+      // Save the updated cart data
+      await setDoc(doc(db, "carts", currentUser.uid), cartData, { merge: true });
+
+      alert("Phone number saved!");
       window.location.href = "../payment/index.html";
     }
 
-    button.addEventListener("click", confirmDate);
+    button.addEventListener("click", savePhoneNumber);
   </script>
 </body>
 </html>

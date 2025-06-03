@@ -1,0 +1,103 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Page</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+    body {
+      font-family: "Varela Round", sans-serif;
+    }
+    table {
+      width: 100%;
+    }
+    th, td {
+      border: 0.1rem solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h1>All Carts</h1>
+  <div id="carts-container"></div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
+      authDomain: "dffenterprise-3f446.firebaseapp.com",
+      projectId: "dffenterprise-3f446",
+      storageBucket: "dffenterprise-3f446.firebasestorage.app",
+      messagingSenderId: "98928528109",
+      appId: "1:98928528109:web:01bcd20d47abd534219ae4"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    
+    onAuthStateChanged(auth, async (user) => {
+      if (user && user.uid === "IOLX8r8PTzW1ZNdkuQaJDVZbgCn2") { // Replace with the owner's UID
+        // Fetch all carts
+        const cartsCollection = collection(db, "carts");
+        const cartsSnapshot = await getDocs(cartsCollection);
+
+        const cartsContainer = document.getElementById("carts-container");
+        cartsContainer.innerHTML = ""; // Clear any existing content
+
+        cartsSnapshot.forEach((doc) => {
+          const cartData = doc.data();
+          const cartItems = cartData.cart || []; // Default to an empty array if cart is undefined
+
+          console.log(cartData);
+
+          if (cartData.phonenumber) {
+            let total = 0; // Initialize total for the current cart
+
+            const cartDiv = document.createElement("div");
+            cartDiv.classList.add("cart-container");
+            cartDiv.innerHTML = `
+              <h2>Cart for user ${cartData.phonenumber}</h2>
+              <table>
+                <tr>
+                  <th>Product Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                </tr>
+                ${cartItems.map(item => {
+                  const subtotal = item.Cost * item.quantity; // Calculate subtotal for each item
+                  total += subtotal; // Add subtotal to the total
+                  return `
+                    <tr>
+                      <td>${item.name}</td>
+                      <td>$${(item.Cost / 100).toFixed(2)}</td>
+                      <td>${item.quantity}</td>
+                      <td>$${(subtotal / 100).toFixed(2)}</td>
+                    </tr>
+                  `;
+                }).join("")}
+                <tfoot>
+                  <tr>
+                    <td colspan="3" style="text-align: right;">Total:</td>
+                    <td id="checkout-total">$${(total / 100).toFixed(2)}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="3" style="text-align: right;">Delivery Date:</td>
+                    <td>${cartData.deliveryDate}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            `;
+            cartsContainer.appendChild(cartDiv);
+          }
+        });
+      } else {
+        alert("You do not have access to this page.");
+        window.location.href = "../login/index.html";
+      }
+    });
+  </script>
+</body>
+</html>
