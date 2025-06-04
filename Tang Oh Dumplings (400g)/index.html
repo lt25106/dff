@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Tang Oh Dumplings</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    img {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header style="margin-bottom: 1rem;">
+    <a href="../index.html">
+      <img src="../dff.png" style="height: 4rem;">
+    </a>
+    <a href="../index.html#cart" style="text-decoration: none;color: #000;">
+      <img src="../c.svg" style="height: 3rem;" id="icon">
+    </a>
+  </header>
+  <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <div style="border-radius: 1.25rem; box-shadow: 0 0 0.5rem; overflow: hidden; width: 50vh;">
+      <img src="../Product_images/Tang Oh Dumplings (400g).png" style="width: 50vh;" id="bigimage">
+    </div>
+    <div style="flex: 1 1; min-width: 30ch;">
+      $5.50<br>
+      <h1 style="margin: 0;">Tang Oh Dumplings (400g)</h1>
+      Dumplings made of locally-grown pesticide-free vegetables and fresh pork.<br>
+      <br><button onclick="addtocart()">Add to Cart <img src="../white c.svg" style="height:1rem; display: inline;"></button>
+    </div>
+  </div>
+  <br>
+  <footer>
+    <span>
+      <h2 style="margin-top: 0;">About Us</h2>
+      DFF Enterprise Pte. Ltd.<br>
+      <a href="https://maps.app.goo.gl/gNykxzc6xDTLVP6MA" class="hover">114 Lavender Street, #05-93, CT Hub 2, Singapore 338729</a><br>
+      <a href="mailto:dffplsg@gmail.com" class="hover">dffplsg@gmail.com</a>
+    </span>
+    <span>
+      <h2 style="margin-top: 0;">Links</h2>
+      <a href="../login/index.html" class="hover">Your Account</a><br>
+      <a href="https://www.instagram.com/dff.enterprise/" class="hover">Our Instagram <img src="../insta.svg" style="height: 1rem; display: inline;"></a>
+    </span>
+  </footer>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+    import { getFirestore, setDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+
+    // Your Firebase configuration (reuse from main site)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSjGR__DtS5jhSljQkO-VI_y4gzKx00Ao",
+      authDomain: "dffenterprise-3f446.firebaseapp.com",
+      projectId: "dffenterprise-3f446",
+      storageBucket: "dffenterprise-3f446.firebasestorage.app",
+      messagingSenderId: "98928528109",
+      appId: "1:98928528109:web:01bcd20d47abd534219ae4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Save cart to Firestore
+    async function saveCartToFirestore(cartItems) {
+      const user = auth.currentUser;
+      if (!user) return;
+      await setDoc(doc(db, "carts", user.uid), { cart: cartItems });
+    }
+
+    // Load cart from Firestore
+    async function loadCartFromFirestore() {
+      const user = auth.currentUser;
+      if (!user) return [];
+      const docSnap = await getDoc(doc(db, "carts", user.uid));
+      if (docSnap.exists()) {
+        return docSnap.data().cart || [];
+      }
+      return [];
+    }
+
+    // Add to cart function using Firestore
+    async function addtocart() {
+      const user = auth.currentUser;
+      if (!user) {
+        alert('Please log in or sign up before adding items to your cart.');
+        window.location.href = '../login/index.html';
+        return;
+      }
+      let cart = await loadCartFromFirestore();
+      const existingItem = cart.find(item => item.name === "Tang Oh Dumplings (400g)");
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({
+          name: "Tang Oh Dumplings (400g)",
+          Cost: 550,
+          Type: "dumpling",
+          quantity: 1
+        });
+      }
+      await saveCartToFirestore(cart);
+      document.getElementById("icon").src = "../notifyc.svg";
+    }
+
+    // Expose addtocart globally for button onclick
+    window.addtocart = addtocart;
+  </script>
+</body>
+</html>
