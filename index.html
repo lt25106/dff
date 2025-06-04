@@ -89,12 +89,7 @@
         console.error("User is not logged in.");
         return;
       }
-      try {
-        await setDoc(doc(db, "carts", user.uid), { cart: cartItems });
-        console.log("Cart saved successfully.");
-      } catch (error) {
-        console.error("Error saving cart:", error);
-      }
+      await setDoc(doc(db, "carts", user.uid), { cart: cartItems, deliveryDate, phonenumber }, { merge: true });
     }
     
     async function loadCartFromFirestore() {
