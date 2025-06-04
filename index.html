@@ -171,36 +171,6 @@
           // Save cart to Firestore after loading
           await saveCartToFirestore(cartItems);
 
-          // Add event listeners for products
-          products.forEach(product => {
-            const productDiv = document.createElement('div');
-            productDiv.classList.add('product');
-            productDiv.dataset.category = product.Type;
-            productDiv.innerHTML = `
-              <a href="${product.name}/index.html">
-                <img src="Product_images/${product.name}.png" style="height: 9rem; border-radius: 1.25rem"> <br>
-                <h2>${product.name}</h2>
-                <span style="font-size: 1.25rem">
-                  <span style="font-weight:1;color:#BBBBBB">$</span>${(product.Cost / 100).toFixed(2)}
-                </span>
-              </a>
-              <br>
-              <button>Add to Cart <img src="white c.svg" style="height:1rem;"></button>
-            `;
-
-            productDiv.querySelector('button').addEventListener('click', async () => {
-              const existingItem = cartItems.find(item => item.name === product.name);
-              if (existingItem) {
-                existingItem.quantity += 1;
-              } else {
-                cartItems.push({ ...product, quantity: 1 });
-              }
-              updateCartDisplay();
-              await saveCartToFirestore(cartItems);
-            });
-            shopDiv.appendChild(productDiv);
-          });
-
           // Add event listeners for search and category filter
           searchbar.addEventListener("keyup", search);
           categoryFilter.addEventListener('change', function() {
