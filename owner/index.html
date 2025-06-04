@@ -62,8 +62,8 @@
               <table>
                 <tr>
                   <th>Product Name</th>
-                  <th>Price</th>
                   <th>Quantity</th>
+                  <th>Price</th>
                   <th>Subtotal</th>
                 </tr>
                 ${cartItems.map(item => {
@@ -72,20 +72,18 @@
                   return `
                     <tr>
                       <td>${item.name}</td>
-                      <td>$${(item.Cost / 100).toFixed(2)}</td>
                       <td>${item.quantity}</td>
+                      <td>$${(item.Cost / 100).toFixed(2)}</td>
                       <td>$${(subtotal / 100).toFixed(2)}</td>
                     </tr>
                   `;
                 }).join("")}
                 <tfoot>
                   <tr>
-                    <td colspan="3" style="text-align: right;">Total:</td>
-                    <td id="checkout-total">$${(total / 100).toFixed(2)}</td>
-                  </tr>
-                  <tr>
-                    <td colspan="3" style="text-align: right;">Delivery Date:</td>
+                    <td style="text-align: right;"><b>Delivery Date</b>:</td>
                     <td>${cartData.deliveryDate}</td>
+                    <td style="text-align: right;"><b>Total</b>:</td>
+                    <td id="checkout-total">$${(total / 100).toFixed(2)}</td>
                   </tr>
                 </tfoot>
               </table>
