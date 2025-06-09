@@ -36,8 +36,10 @@
       <div style="color: white;">Payment</div>
     </div> 
   </div>
-  <h1>Please pay .</h1>
-  <img style="position: absolute; top:50%;left:50%;transform: translate(-50%, -50%); height: 20rem;" src="qrcode.png">
+  <h1>Please paynow .</h1>
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <img style="height: 19rem; image-rendering: pixelated;" src="qrcode.png">
+  </div>
   <footer>
     <span>
       <h2 style="margin-top: 0;">About Us</h2>
@@ -78,7 +80,7 @@
       currentUser = user;
       if (currentUser) {
         const totalPrice = await fetchTotalPrice(currentUser.uid);
-        h1.textContent = `Please pay $${(totalPrice / 100).toFixed(2)}.`;
+        h1.textContent = `Please paynow $${(totalPrice / 100).toFixed(2)}.`;
       }
     });
 
