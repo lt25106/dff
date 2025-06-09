@@ -161,3 +161,13 @@ footer {
   transform: scale(1.05);
   transition: all 0.5s ease;
 }
+@media screen and (max-width: 378px) {
+  #icon {
+    display: none;
+  }
+}
+@media screen and (max-width: 312px) {
+  #logoth {
+    display: none;
+  }
+}
