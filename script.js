@@ -130,19 +130,20 @@ function updateCartDisplay() {
   const cartTotal = document.getElementById('cart-total');
   cartItemsBody.innerHTML = '';
   total = calculateTotal(cartItems);
-  
+
   cartItems.forEach((item, index) => {
     const row = createTableRow(item, index);
     cartItemsBody.appendChild(row);
   });
-  
+
   cartTotal.textContent = (total / 100).toFixed(2);
-  updateEventListeners();
 }
 
-function updateEventListeners() {
-  document.querySelectorAll('.quantity-input').forEach(input => {
-    input.addEventListener('change', async (e) => {
+// Event delegation for cart actions
+document.addEventListener('DOMContentLoaded', () => {
+  const cartItemsBody = document.querySelector('#cart-items tbody');
+  cartItemsBody.addEventListener('change', async (e) => {
+    if (e.target.classList.contains('quantity-input')) {
       const index = e.target.dataset.index;
       const newQuantity = parseInt(e.target.value, 10);
       if (newQuantity > 0) {
@@ -150,18 +151,19 @@ function updateEventListeners() {
         await saveCartToFirestore(cartItems);
         updateCartDisplay();
       }
-    });
+    }
   });
-  
-  document.querySelectorAll('.remove-button').forEach(button => {
-    button.addEventListener('click', async (e) => {
-      const index = e.target.dataset.index;
+
+  cartItemsBody.addEventListener('click', async (e) => {
+    if (e.target.closest('.remove-button')) {
+      const button = e.target.closest('.remove-button');
+      const index = button.dataset.index;
       cartItems.splice(index, 1);
       await saveCartToFirestore(cartItems);
       updateCartDisplay();
-    });
+    }
   });
-}
+});
 
 async function addToCart(product) {
   const existingItem = cartItems.find(item => item.name === product.name);
